@@ -6,12 +6,9 @@ const nextConfig = {
   httpAgentOptions: {
     keepAlive: true,
   },
-  serverRuntimeConfig: {
-    PROJECT_ROOT: __dirname,
-  },
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
 };
 
 export default nextConfig;
