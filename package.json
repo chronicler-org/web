@@ -7,17 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write --list-different .",
+    "lint:fix": "eslint --fix",
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.{js, jsx,ts,tsx}": [
-      "eslint --quiet --fix"
-    ],
-    "*.{json,js,ts,jsx,tsx,html}": [
-      "prettier --write --ignore-unknown"
-    ]
+    "*.{js,jsx}": "eslint --fix",
+    "*.{js,jsx,css,md}": "prettier --write"
   },
   "dependencies": {
     "next": "14.1.0",
