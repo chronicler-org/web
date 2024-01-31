@@ -5,13 +5,10 @@
   },
   "extends": [
     "next/core-web-vitals",
-    "prettier",
-    "eslint:recommended",
     "plugin:tailwindcss/recommended",
     "airbnb",
     "airbnb-typescript",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended"
   ],
