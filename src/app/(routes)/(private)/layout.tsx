@@ -10,9 +10,9 @@ type LayoutProps = {
 
 const PrivateLayout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className='drawer px-6'>
-      <input id='drawer-toggle' type='checkbox' className='drawer-toggle' />
-      <div className='drawer-content'>
+    <div className='drawer min-h-screen px-6'>
+      <div className='drawer-content flex flex-col'>
+        <input id='drawer-toggle' type='checkbox' className='drawer-toggle' />
         {/* Navbar */}
         <div className='navbar px-0'>
           <div className='navbar-start'>
@@ -66,7 +66,9 @@ const PrivateLayout: FC<LayoutProps> = ({ children }) => {
           </div>
         </div>
         {/* Page content */}
-        <div className='container mx-auto'>{children}</div>
+        <div className='mx-auto flex w-full max-w-screen-2xl flex-1 flex-col'>
+          {children}
+        </div>
       </div>
 
       <div className='drawer-side'>
