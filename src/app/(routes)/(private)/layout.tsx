@@ -1,5 +1,7 @@
 'use client';
 
+import Logo from '@/app/components/logo';
+import { List } from '@phosphor-icons/react';
 import { FC, ReactNode } from 'react';
 
 type LayoutProps = {
@@ -8,13 +10,90 @@ type LayoutProps = {
 
 const PrivateLayout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className='container mx-auto'>
-      <div className='navbar'>
-        <a href='/' className='btn btn-ghost text-xl'>
-          Chronicler
-        </a>
+    <div className='drawer px-6'>
+      <input id='drawer-toggle' type='checkbox' className='drawer-toggle' />
+      <div className='drawer-content'>
+        {/* Navbar */}
+        <div className='navbar px-0'>
+          <div className='navbar-start'>
+            <a
+              href='/'
+              aria-label='Logo da Chronicler'
+              className='btn btn-ghost px-0 text-2xl'
+            >
+              <Logo />
+            </a>
+          </div>
+          <div className='navbar-end gap-2'>
+            <div className='flex-none md:hidden'>
+              {/* eslint jsx-a11y/label-has-associated-control: ["error", { assert: "either" } ] */}
+              <label
+                htmlFor='drawer-toggle'
+                aria-label='Abre menu'
+                className='btn btn-square btn-ghost text-2xl'
+              >
+                <List />
+              </label>
+            </div>
+            <div className='hidden flex-none md:block'>
+              <ul className='menu menu-horizontal'>
+                {/* Navbar menu content */}
+                <li>
+                  <a>Clientes</a>
+                </li>
+                <li>
+                  <a>Atendentes</a>
+                </li>
+                <li>
+                  <a>Produtos</a>
+                </li>
+                <li>
+                  <a>Vendas</a>
+                </li>
+                <li>
+                  <a>Tags</a>
+                </li>
+              </ul>
+            </div>
+            <button
+              type='button'
+              className='avatar placeholder btn btn-circle btn-outline'
+            >
+              <div>
+                <span>Ch</span>
+              </div>
+            </button>
+          </div>
+        </div>
+        {/* Page content */}
+        <div className='container mx-auto'>{children}</div>
       </div>
-      <div>{children}</div>
+
+      <div className='drawer-side'>
+        <label
+          htmlFor='drawer-toggle'
+          aria-label='Fecha menu'
+          className='drawer-overlay'
+        />
+        <ul className='menu min-h-full w-80 bg-base-200 p-4'>
+          {/* Sidebar content */}
+          <li>
+            <a>Clientes</a>
+          </li>
+          <li>
+            <a>Atendentes</a>
+          </li>
+          <li>
+            <a>Produtos</a>
+          </li>
+          <li>
+            <a>Vendas</a>
+          </li>
+          <li>
+            <a>Tags</a>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
