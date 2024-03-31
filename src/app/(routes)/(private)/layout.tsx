@@ -35,6 +35,7 @@ const PrivateLayout: FC<LayoutProps> = ({ children }) => {
                 <List />
               </label>
             </div>
+
             <div className='hidden flex-none md:block'>
               <ul className='menu menu-horizontal'>
                 {/* Navbar menu content */}
@@ -65,6 +66,7 @@ const PrivateLayout: FC<LayoutProps> = ({ children }) => {
             </button>
           </div>
         </div>
+
         {/* Page content */}
         <div className='mx-auto flex w-full max-w-screen-2xl flex-1 flex-col'>
           {children}
@@ -77,7 +79,7 @@ const PrivateLayout: FC<LayoutProps> = ({ children }) => {
           aria-label='Fecha menu'
           className='drawer-overlay'
         />
-        <ul className='menu min-h-full w-80 bg-base-200 p-4'>
+        <ul className='menu min-h-full w-80 bg-base-200 p-4 text-lg'>
           {/* Sidebar content */}
           <li>
             <a>Clientes</a>
