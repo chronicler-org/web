@@ -51,9 +51,6 @@ const PrivateLayout: FC<LayoutProps> = ({ children }) => {
                 <li>
                   <a>Vendas</a>
                 </li>
-                <li>
-                  <a>Tags</a>
-                </li>
               </ul>
             </div>
             <button
@@ -92,9 +89,6 @@ const PrivateLayout: FC<LayoutProps> = ({ children }) => {
           </li>
           <li>
             <a>Vendas</a>
-          </li>
-          <li>
-            <a>Tags</a>
           </li>
         </ul>
       </div>
