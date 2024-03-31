@@ -19,7 +19,7 @@ const Metric: FC<MetricProps> = ({ value, title, currency, rate }) => {
     <div>
       <div className='flex items-center gap-2'>
         <span className='text-3xl font-bold opacity-70'>{currency}</span>
-        <span className='text-6xl font-bold'>
+        <span className='text-[min(3.75rem,10vw)] font-bold'>
           {value.toLocaleString(
             'pt-BR',
             currency && value < 999.99
