@@ -36,6 +36,9 @@
       "@/interfaces/*": [
         "src/interfaces/*"
       ],
+      "@/services/*": [
+        "src/services/*"
+      ],
       "@/constants/*": [
         "src/constants/*"
       ],
