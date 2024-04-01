@@ -1,6 +1,7 @@
 'use client';
 
 import AverageDailySales from '@/app/components/average-daily-sales';
+import CustomersThisMonth from '@/app/components/customers-this-month';
 import OrdersThisMonth from '@/app/components/orders-this-month';
 import SalesThisMonth from '@/app/components/sales-this-month';
 
@@ -12,7 +13,7 @@ const Page = () => {
         <AverageDailySales className='lg:col-span-2' />
         <SalesThisMonth className='lg:col-span-3' />
         <OrdersThisMonth className='lg:col-span-3' />
-        <div className='lg:col-span-2' />
+        <CustomersThisMonth className='lg:col-span-2' />
       </section>
     </>
   );
