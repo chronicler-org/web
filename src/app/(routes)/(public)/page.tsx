@@ -1,15 +1,13 @@
 'use client';
 
-import { BookBookmark, Envelope, Key } from '@phosphor-icons/react';
+import Logo from '@/app/components/logo';
+import { Envelope, Key } from '@phosphor-icons/react';
 
 const Page = () => {
   return (
     <main className='relative flex min-h-screen items-center justify-center bg-[url("/landscape.jpg")] bg-cover bg-center'>
       <div className='z-10 flex w-[min(26rem,100%)] flex-col gap-4 rounded-3xl px-4 py-12 sm:gap-8 sm:px-8 sm:backdrop-blur'>
-        <div className='flex items-center justify-center gap-2 p-2 text-[min(3.75rem,15vw)] text-neutral'>
-          <BookBookmark className='shrink-0' />
-          <h1>Chronicler</h1>
-        </div>
+        <Logo className='p-2 text-[min(3.75rem,15vw)] text-neutral' />
         <form className='flex w-full flex-col gap-4'>
           <label
             htmlFor='email'
