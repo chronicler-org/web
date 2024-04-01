@@ -13,8 +13,9 @@ const OrdersThisMonth: FC<OrdersThisMonthProps> = ({ className }) => {
   return (
     <div className={className}>
       <div className='grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 sm:grid-rows-3 lg:flex-row'>
-        <div className='order-3 rounded-box bg-base-300 sm:order-2 sm:row-span-3'>
-          <ul className='menu menu-lg rounded-box'>
+        <div className='order-3 flex flex-col rounded-box bg-base-300 p-2 sm:order-2 sm:row-span-3'>
+          <ul className='menu menu-lg flex-1 rounded-box'>
+            <li className='menu-title'>Últimos produtos vendidos</li>
             <li>
               <a>Camisa X</a>
             </li>

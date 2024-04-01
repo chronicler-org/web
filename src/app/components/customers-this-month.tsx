@@ -12,8 +12,9 @@ const CustomersThisMonth: FC<CustomersThisMonthProps> = ({ className }) => {
     <div className={className}>
       <div className='flex flex-col'>
         <Metric value={12} rate={0} title='Novos clientes este mês' />
-        <div className='rounded-box bg-base-300'>
-          <ul className='menu menu-lg rounded-box'>
+        <div className='mt-4 flex flex-1 flex-col rounded-box bg-base-300 p-2'>
+          <ul className='menu menu-lg flex-1 rounded-box'>
+            <li className='menu-title'>Novos clientes</li>
             <li>
               <a>João</a>
             </li>
