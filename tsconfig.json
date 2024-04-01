@@ -33,6 +33,18 @@
       "@/components/*": [
         "src/app/components/*"
       ],
+      "@/interfaces/*": [
+        "src/interfaces/*"
+      ],
+      "@/constants/*": [
+        "src/constants/*"
+      ],
+      "@/enums/*": [
+        "src/enums/*"
+      ],
+      "@/errors/*": [
+        "src/errors/*"
+      ],
     },
   },
   "include": [
