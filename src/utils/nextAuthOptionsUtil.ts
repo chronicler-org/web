@@ -78,8 +78,8 @@ export const nextAuthOptions: NextAuthOptions = {
 
       const userResponse = await getStaticData<IUser>(
         role === UserRole.MANAGER
-          ? `${EndPoints.MANAGER_ME}`
-          : `${EndPoints.ATTENDANT_ME}`,
+          ? EndPoints.MANAGER_ME
+          : EndPoints.ATTENDANT_ME,
         {
           authToken,
           cache: 'no-store',
