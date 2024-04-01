@@ -1,10 +1,13 @@
 import { AxiosError } from 'axios';
+import jwt from 'jsonwebtoken';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { cookies } from 'next/headers';
 
 import { AUTH_TOKEN_EXPIRES_IN, AUTH_TOKEN_NAME } from '@/constants/publicEnv';
 import { EndPoints } from '@/enums/endpointsEnum';
+import { UserRole } from '@/enums/user';
+import { IUser } from '@/interfaces';
 import { ILoginCredentialsRequest } from '@/interfaces/auth';
 import { IApiError } from '@/interfaces/general';
 import { authService } from '@/services/authService';
@@ -32,16 +35,18 @@ export const nextAuthOptions: NextAuthOptions = {
 
           cookies().set({
             name: AUTH_TOKEN_NAME,
-            value: result.accessToken,
+            value: result.auth_token,
             maxAge: AUTH_TOKEN_EXPIRES_IN,
             path: '/',
           });
 
+          const decodedToken: any = jwt.decode(result.auth_token);
+
           return {
-            accessToken: result.accessToken,
-            refreshToken: result.refreshToken,
-            expiresIn: result.expiresIn,
+            authToken: result.auth_token,
+            expiresIn: result.expires_in,
             ...result.user,
+            role: decodedToken?.role as UserRole,
           };
         } catch (err) {
           if (err instanceof AxiosError) {
@@ -67,17 +72,21 @@ export const nextAuthOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      const accessToken = cookies().get(AUTH_TOKEN_NAME)?.value;
-      const userResponse = await getStaticData<IUser>(`${EndPoints.USERS}/me`, {
-        authToken: accessToken,
-        cache: 'no-store',
-      });
+      const authToken = cookies().get(AUTH_TOKEN_NAME)?.value as string;
+      const decodedToken: any = jwt.decode(authToken);
+      const role = decodedToken?.role as UserRole;
 
-      session.accessToken = token.accessToken;
-      session.expiresIn = token.expiresIn;
-
+      const userResponse = await getStaticData<IUser>(
+        role === UserRole.MANAGER
+          ? `${EndPoints.MANAGER_ME}`
+          : `${EndPoints.ATTENDANT_ME}`,
+        {
+          authToken,
+          cache: 'no-store',
+        }
+      );
       session.user = userResponse?.result as IUser;
-
+      session.role = role;
       return {
         ...session,
         ...token,
