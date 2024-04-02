@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
 import { FC, ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { NextAuthSessionProvider } from '@/components/NextAuthSessionProvider';
 import { ReactQueryProvider } from '@/components/ReactQueryProvider';
@@ -27,6 +29,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
             <AntdProvider>{children}</AntdProvider>
           </NextAuthSessionProvider>
         </ReactQueryProvider>
+        <ToastContainer />
       </body>
     </html>
   );

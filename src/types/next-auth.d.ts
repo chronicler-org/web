@@ -1,6 +1,6 @@
 /* eslint-disable import/first */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IUser } from '@interfaces/user';
+import { IUser } from '@/interfaces/user';
 
 import NextAuth from 'next-auth/next';
 

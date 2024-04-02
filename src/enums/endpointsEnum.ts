@@ -4,7 +4,7 @@ export const BASE_URL = `${API_URL}`;
 
 export enum EndPoints {
   AUTH = '/auth',
-  AUTH_LOGIN = '/auth/login',
+  AUTH_LOGIN = '/login',
 
   MANAGER = '/manager',
   MANAGER_ME = '/manager/me',

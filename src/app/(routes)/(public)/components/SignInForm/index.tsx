@@ -1,15 +1,36 @@
 'use client';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Envelope, Key } from '@phosphor-icons/react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { FC } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import * as yup from 'yup';
+
+import { FormItem, Input } from '@/app/components/ui';
+import { IApiError, ILoginCredentialsForm } from '@/interfaces';
+import { Routes } from '@/enums/routesEnum';
+
+const schema = yup.object().shape({
+  email: yup.string().required('Digite o e-mail').email('E-mail inválido'),
+  password: yup
+    .string()
+    .required('Digite a senha')
+    .min(8, 'Mínimo de 8 caracteres'),
+});
 
 export const SignInForm: FC = () => {
-  /* const {
-    register,
+  const router = useRouter();
+
+  const {
+    control,
     handleSubmit,
     formState: { errors, isDirty, isValid, isSubmitting },
-  } = useForm<ISignInCredentials>({
+  } = useForm<ILoginCredentialsForm>({
     mode: 'onChange',
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = handleSubmit(async (data) => {
@@ -26,38 +47,45 @@ export const SignInForm: FC = () => {
       return;
     }
 
-    window.location.reload();
-  }); */
+    router.push(`/${Routes.ACCOUNT}`);
+  });
 
   return (
-    <form className='flex w-full flex-col gap-4'>
-      <label
-        htmlFor='email'
-        aria-label='Email'
-        className='input input-bordered flex items-center gap-2'
-      >
-        <Envelope weight='fill' className='shrink-0' />
-        <input
-          id='email'
-          type='text'
-          className='min-w-0 grow'
+    <form onSubmit={onSubmit}>
+      <FormItem name='email' required labelCol={{ span: 24 }} errors={errors}>
+        <Input
+          prefix={<Envelope />}
+          name='email'
+          size='large'
           placeholder='Email'
-        />
-      </label>
-      <label
-        htmlFor='password'
-        aria-label='Senha'
-        className='input input-bordered flex items-center gap-2'
-      >
-        <Key weight='fill' className='shrink-0' />
-        <input
-          id='password'
           type='text'
-          className='min-w-0 grow'
-          placeholder='Senha'
+          control={control}
+          errors={errors}
         />
-      </label>
-      <button type='submit' className='btn btn-neutral w-full'>
+      </FormItem>
+
+      <FormItem
+        name='password'
+        required
+        labelCol={{ span: 24 }}
+        errors={errors}
+      >
+        <Input
+          prefix={<Key />}
+          name='password'
+          size='large'
+          placeholder='Email'
+          type='password'
+          control={control}
+          errors={errors}
+        />
+      </FormItem>
+
+      <button
+        type='submit'
+        className='btn btn-neutral w-full'
+        disabled={!isDirty || !isValid || isSubmitting}
+      >
         Login
       </button>
     </form>

@@ -28,6 +28,7 @@ export const nextAuthOptions: NextAuthOptions = {
           password: credentials?.password as string,
           email: credentials?.email as string,
         };
+
         try {
           const {
             data: { result },
@@ -68,11 +69,11 @@ export const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, account }) {
       if (user && account) return { ...token, ...user };
-
       return token;
     },
     async session({ session, token }) {
       const authToken = cookies().get(AUTH_TOKEN_NAME)?.value as string;
+
       const decodedToken: any = jwt.decode(authToken);
       const role = decodedToken?.role as UserRole;
 

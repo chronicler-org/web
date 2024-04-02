@@ -1,3 +1,3 @@
 export enum Routes {
-  ACCOUNT = 'account',
+  ACCOUNT = 'dashboard',
 }
