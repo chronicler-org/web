@@ -6,6 +6,7 @@ import { NextAuthSessionProvider } from '@/components/NextAuthSessionProvider';
 import { ReactQueryProvider } from '@/components/ReactQueryProvider';
 
 import '@/styles/globals.css';
+import { AntdProvider } from '../components/AntdProvider';
 
 type RootLayoutProps = {
   children: ReactNode;
@@ -22,7 +23,9 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
     <html lang='pt'>
       <body className={font.className}>
         <ReactQueryProvider>
-          <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+          <NextAuthSessionProvider>
+            <AntdProvider>{children}</AntdProvider>
+          </NextAuthSessionProvider>
         </ReactQueryProvider>
       </body>
     </html>
