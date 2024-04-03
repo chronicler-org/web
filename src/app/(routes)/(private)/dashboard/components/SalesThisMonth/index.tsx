@@ -1,12 +1,25 @@
-import Metric from '@/app/components/Metric';
-import 'chart.js/auto';
-import { Line } from 'react-chartjs-2';
+'use client';
+
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
+import { ChartProps } from 'react-chartjs-2';
+
+import Metric from '@/app/components/Metric';
 
 type SalesThisMonthProps = {
   className?: string;
 };
 
+const Line = dynamic<ChartProps<'line'>>(
+  () =>
+    import('react-chartjs-2').then((module) => ({
+      default: module.Line,
+    })),
+  {
+    ssr: false,
+    suspense: true,
+  }
+);
 const SalesThisMonth: FC<SalesThisMonthProps> = ({ className }) => {
   return (
     <div className={className}>
@@ -18,6 +31,7 @@ const SalesThisMonth: FC<SalesThisMonthProps> = ({ className }) => {
       />
       <div className='flex-1'>
         <Line
+          type='line'
           className='mt-4'
           options={{
             maintainAspectRatio: false,

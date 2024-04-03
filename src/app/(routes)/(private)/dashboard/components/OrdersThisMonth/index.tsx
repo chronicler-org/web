@@ -1,13 +1,25 @@
 'use client';
 
-import Metric from '@/app/components/Metric';
-import 'chart.js/auto';
-import { Doughnut } from 'react-chartjs-2';
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
+import { ChartProps } from 'react-chartjs-2';
+
+import Metric from '@/app/components/Metric';
 
 type OrdersThisMonthProps = {
   className?: string;
 };
+
+const Doughnut = dynamic<ChartProps<'doughnut'>>(
+  () =>
+    import('react-chartjs-2').then((module) => ({
+      default: module.Doughnut,
+    })),
+  {
+    ssr: false,
+    suspense: true,
+  }
+);
 
 const OrdersThisMonth: FC<OrdersThisMonthProps> = ({ className }) => {
   return (
@@ -17,6 +29,7 @@ const OrdersThisMonth: FC<OrdersThisMonthProps> = ({ className }) => {
           <Metric value={42.75} rate={2} title='Produtos vendidos neste mês' />
           <div className='flex-1'>
             <Doughnut
+              type='doughnut'
               options={{
                 maintainAspectRatio: false,
                 responsive: true,
