@@ -1,6 +1,6 @@
 'use client';
 
-import Metric from '@/app/components/metric';
+import Metric from '@/app/components/Metric';
 import 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
 import { FC } from 'react';

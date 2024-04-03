@@ -1,4 +1,4 @@
-import Logo from '@/app/components/logo';
+import Logo from '@/app/components/Logo';
 import { List } from '@phosphor-icons/react/dist/ssr';
 import { Session, getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
