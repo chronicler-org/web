@@ -1,13 +1,25 @@
 'use client';
 
-import Metric from '@/app/components/Metric';
-import 'chart.js/auto';
-import { Bar } from 'react-chartjs-2';
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
+import { ChartProps } from 'react-chartjs-2';
+
+import Metric from '@/app/components/Metric';
 
 type AverageDailySalesProps = {
   className?: string;
 };
+
+const Bar = dynamic<ChartProps<'bar'>>(
+  () =>
+    import('react-chartjs-2').then((module) => ({
+      default: module.Bar,
+    })),
+  {
+    ssr: false,
+    suspense: true,
+  }
+);
 
 const AverageDailySales: FC<AverageDailySalesProps> = ({ className }) => {
   return (
@@ -20,6 +32,7 @@ const AverageDailySales: FC<AverageDailySalesProps> = ({ className }) => {
       />
       <div className='flex-1'>
         <Bar
+          type='bar'
           className='mt-4'
           options={{
             maintainAspectRatio: false,

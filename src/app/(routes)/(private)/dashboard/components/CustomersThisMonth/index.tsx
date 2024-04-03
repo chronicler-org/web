@@ -1,7 +1,8 @@
 'use client';
 
-import Metric from '@/app/components/Metric';
 import { FC } from 'react';
+
+import Metric from '@/app/components/Metric';
 
 type CustomersThisMonthProps = {
   className?: string;
