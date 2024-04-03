@@ -11,4 +11,6 @@ export enum EndPoints {
 
   ATTENDANT = '/attendant',
   ATTENDANT_ME = '/attendant/me',
+
+  CUSTOMER = '/customer',
 }
