@@ -27,7 +27,7 @@ export const SignInForm: FC = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<ILoginCredentialsForm>({
     mode: 'onChange',
     resolver: yupResolver(schema),
@@ -74,7 +74,7 @@ export const SignInForm: FC = () => {
           prefix={<Key />}
           name='password'
           size='large'
-          placeholder='Email'
+          placeholder='Senha'
           type='password'
           control={control}
           errors={errors}
@@ -84,7 +84,7 @@ export const SignInForm: FC = () => {
       <button
         type='submit'
         className='btn btn-neutral w-full'
-        disabled={!isDirty || !isValid || isSubmitting}
+        disabled={isSubmitting}
       >
         Login
       </button>
