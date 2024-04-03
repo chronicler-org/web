@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import Rate from './rate';
+import Rate from '@/app/components/Rate';
 
 type MetricProps = {
   value?: number;

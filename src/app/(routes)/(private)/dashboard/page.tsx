@@ -2,7 +2,7 @@ import { Session, getServerSession } from 'next-auth';
 
 import { nextAuthOptions } from '@/utils/nextAuthOptionsUtil';
 
-import { Statistics } from './components/Statistics';
+import Statistics from './components/Statistics';
 
 const Page = async () => {
   const session = (await getServerSession(nextAuthOptions)) as Session;

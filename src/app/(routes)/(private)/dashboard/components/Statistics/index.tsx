@@ -1,11 +1,11 @@
 'use client';
 
-import AverageDailySales from '@/app/components/average-daily-sales';
-import CustomersThisMonth from '@/app/components/customers-this-month';
-import OrdersThisMonth from '@/app/components/orders-this-month';
-import SalesThisMonth from '@/app/components/sales-this-month';
+import AverageDailySales from '../AverageDailySales';
+import CustomersThisMonth from '../CustomersThisMonth';
+import OrdersThisMonth from '../OrdersThisMonth';
+import SalesThisMonth from '../SalesThisMonth';
 
-export const Statistics = () => {
+const Statistics = () => {
   return (
     <section className='flex flex-1 flex-col gap-4 py-4 lg:grid lg:grid-cols-5 lg:grid-rows-2 [&>div]:flex [&>div]:flex-col [&>div]:rounded-xl [&>div]:bg-base-200 [&>div]:p-4'>
       <AverageDailySales className='lg:col-span-2' />
@@ -15,3 +15,5 @@ export const Statistics = () => {
     </section>
   );
 };
+
+export default Statistics;

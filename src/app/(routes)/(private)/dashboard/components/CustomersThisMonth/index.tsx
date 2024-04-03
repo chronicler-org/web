@@ -1,6 +1,6 @@
 'use client';
 
-import Metric from '@/app/components/metric';
+import Metric from '@/app/components/Metric';
 import { FC } from 'react';
 
 type CustomersThisMonthProps = {
