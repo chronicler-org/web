@@ -29,7 +29,10 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
             <AntdProvider>{children}</AntdProvider>
           </NextAuthSessionProvider>
         </ReactQueryProvider>
-        <ToastContainer />
+        <ToastContainer
+          bodyClassName='text-base-content'
+          toastClassName='bg-base-200'
+        />
       </body>
     </html>
   );
