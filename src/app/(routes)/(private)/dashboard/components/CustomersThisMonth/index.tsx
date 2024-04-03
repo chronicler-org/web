@@ -10,11 +10,13 @@ import { IApiResponse, ICustomer } from '@/interfaces';
 type CustomersThisMonthProps = {
   className?: string;
   customersResponse: IApiResponse<ICustomer[]>;
+  newCustomersVariation: number;
 };
 
 const CustomersThisMonth: FC<CustomersThisMonthProps> = ({
   className,
   customersResponse,
+  newCustomersVariation,
 }) => {
   const { meta, result: customers } = customersResponse;
   return (
@@ -22,7 +24,7 @@ const CustomersThisMonth: FC<CustomersThisMonthProps> = ({
       <div className='flex flex-col'>
         <Metric
           value={meta.total_count}
-          rate={0}
+          rate={newCustomersVariation}
           title='Novos clientes este mês'
         />
         <div className='mt-4 flex flex-1 flex-col rounded-box bg-base-300 p-2'>
