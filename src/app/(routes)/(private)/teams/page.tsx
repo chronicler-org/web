@@ -23,6 +23,7 @@ const Page = () => {
   const [sortAscending, setSortAscending] = useState<Boolean>(false);
   const [teamElement, setTeamElement] = useState<TeamType>();
   const modalRef = useRef<HTMLDialogElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleModal = (e?: TeamType) => {
     return () => {
@@ -38,13 +39,13 @@ const Page = () => {
       <div className='flex gap-2'>
         <label
           aria-label='Buscar equipe'
-          htmlFor='search-customer'
+          htmlFor='search-team'
           className='input input-bordered flex min-w-0 grow items-center gap-2'
         >
           <MagnifyingGlass />
           <input
-            id='search-customer'
-            name='search-customer'
+            id='search-team'
+            name='search-team'
             type='text'
             className='min-w-0 grow'
             placeholder='Buscar equipe'
@@ -59,7 +60,7 @@ const Page = () => {
           {sortAscending ? <SortAscending /> : <SortDescending />}
         </button>
         <button
-          aria-label='Cadastrar novo atendente'
+          aria-label='Cadastrar novo time'
           type='button'
           className='btn btn-square btn-outline text-xl'
           onClick={handleModal()}
@@ -97,6 +98,7 @@ const Page = () => {
           <form
             id='team-form'
             method='post'
+            ref={formRef}
             onSubmit={onSubmit}
             className='flex flex-col gap-4'
           >
@@ -120,11 +122,20 @@ const Page = () => {
           </form>
           <div className='modal-action'>
             <form method='dialog'>
-              <button type='submit' className='btn btn-ghost'>
+              <button
+                type='submit'
+                className='btn btn-ghost'
+                onClick={() => formRef.current?.reset()}
+              >
                 Cancelar
               </button>
             </form>
-            <button type='submit' form='attendant-form' className='btn'>
+            <button
+              type='submit'
+              form='team-form'
+              className='btn'
+              onClick={() => formRef.current?.reset()}
+            >
               Salvar
             </button>
           </div>
