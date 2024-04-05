@@ -1,6 +1,6 @@
 'use client';
 
-import { ITeam } from '@/interfaces';
+import { IAttendant } from '@/interfaces';
 import {
   CalendarDots,
   Envelope,
@@ -13,52 +13,49 @@ import {
 } from '@phosphor-icons/react';
 import { useRef, useState } from 'react';
 
-type AttendantType = {
-  id: number;
-  name: string;
-  email: string;
-  cpf: string;
-  birth: Date;
-  team: ITeam;
-};
-
 const now = new Date();
 const createdAt = now;
 const updatedAt = now;
 
-const attendants: Array<AttendantType> = [
+const attendants: Array<IAttendant> = [
   {
-    id: 1,
+    id: '1',
     name: 'Carlos Adriano',
     email: 'carlosadriano@mail.com',
     cpf: '11111111111',
-    birth: new Date(2002, 3, 2),
+    birthDate: new Date(2002, 3, 2),
     team: { id: '1', name: 'Loja', createdAt, updatedAt },
+    createdAt,
+    updatedAt,
   },
   {
-    id: 2,
+    id: '2',
     name: 'João Mota',
     email: 'joaomota@mail.com',
     cpf: '11111111111',
-    birth: new Date(1997, 4, 9),
+    birthDate: new Date(1997, 4, 9),
     team: { id: '1', name: 'Loja', createdAt, updatedAt },
+    createdAt,
+    updatedAt,
   },
   {
-    id: 3,
+    id: '3',
     name: 'Vanessa Souza',
     email: 'vanessasouza@mail.com',
     cpf: '11111111111',
-    birth: new Date(2001, 11, 20),
+    birthDate: new Date(2001, 11, 20),
     team: { id: '2', name: 'Virtual', createdAt, updatedAt },
+    createdAt,
+    updatedAt,
   },
 ];
 
 const Page = () => {
   const [sortAscending, setSortAscending] = useState<Boolean>(false);
-  const [attendantElement, setAttendantElement] = useState<AttendantType>();
+  const [attendantElement, setAttendantElement] = useState<IAttendant>();
   const modalRef = useRef<HTMLDialogElement>(null);
 
-  const handleModal = (e?: AttendantType) => {
+  const handleModal = (e?: IAttendant) => {
     return () => {
       setAttendantElement(e);
       modalRef.current?.showModal();
@@ -203,7 +200,7 @@ const Page = () => {
                   id='brith'
                   placeholder='dd/MM/yyyy'
                   className='min-w-0 grow'
-                  defaultValue={attendantElement?.birth
+                  defaultValue={attendantElement?.birthDate
                     .toISOString()
                     .substring(0, 10)}
                   required
