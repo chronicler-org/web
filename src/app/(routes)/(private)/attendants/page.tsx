@@ -1,5 +1,6 @@
 'use client';
 
+import { ITeam } from '@/interfaces';
 import {
   CalendarDots,
   Envelope,
@@ -12,19 +13,18 @@ import {
 } from '@phosphor-icons/react';
 import { useRef, useState } from 'react';
 
-type TeamType = {
-  id: number;
-  name: string;
-};
-
 type AttendantType = {
   id: number;
   name: string;
   email: string;
   cpf: string;
   birth: Date;
-  team: TeamType;
+  team: ITeam;
 };
+
+const now = new Date();
+const createdAt = now;
+const updatedAt = now;
 
 const attendants: Array<AttendantType> = [
   {
@@ -33,7 +33,7 @@ const attendants: Array<AttendantType> = [
     email: 'carlosadriano@mail.com',
     cpf: '11111111111',
     birth: new Date(2002, 3, 2),
-    team: { id: 1, name: 'Loja' },
+    team: { id: '1', name: 'Loja', createdAt, updatedAt },
   },
   {
     id: 2,
@@ -41,7 +41,7 @@ const attendants: Array<AttendantType> = [
     email: 'joaomota@mail.com',
     cpf: '11111111111',
     birth: new Date(1997, 4, 9),
-    team: { id: 1, name: 'Loja' },
+    team: { id: '1', name: 'Loja', createdAt, updatedAt },
   },
   {
     id: 3,
@@ -49,7 +49,7 @@ const attendants: Array<AttendantType> = [
     email: 'vanessasouza@mail.com',
     cpf: '11111111111',
     birth: new Date(2001, 11, 20),
-    team: { id: 2, name: 'Virtual' },
+    team: { id: '2', name: 'Virtual', createdAt, updatedAt },
   },
 ];
 
