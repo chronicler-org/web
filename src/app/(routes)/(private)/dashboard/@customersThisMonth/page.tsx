@@ -18,11 +18,13 @@ const Page = async () => {
     getStaticData<ICustomer[]>(`${EndPoints.CUSTOMER}`, {
       search: `created_month=${currentMonth}&created_year=${currentYear}&limit=6`,
       authToken: session.authToken,
+      cache: 'no-cache',
     }),
     getStaticData<INewCustomersVariation>(
       `${EndPoints.NEW_CUSTOMER_VARIATION}`,
       {
         authToken: session.authToken,
+        cache: 'no-cache',
       }
     ),
   ]);
