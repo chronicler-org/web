@@ -1,5 +1,6 @@
 'use client';
 
+import { ITeam } from '@/interfaces';
 import {
   MagnifyingGlass,
   Plus,
@@ -9,23 +10,22 @@ import {
 } from '@phosphor-icons/react';
 import { useRef, useState } from 'react';
 
-type TeamType = {
-  id: number;
-  name: string;
-};
+const now = new Date();
+const createdAt = now;
+const updatedAt = now;
 
-const teams: Array<TeamType> = [
-  { id: 1, name: 'Loja' },
-  { id: 2, name: 'Virtual' },
+const teams: Array<ITeam> = [
+  { id: '1', name: 'Loja', createdAt, updatedAt },
+  { id: '2', name: 'Virtual', createdAt, updatedAt },
 ];
 
 const Page = () => {
   const [sortAscending, setSortAscending] = useState<Boolean>(false);
-  const [teamElement, setTeamElement] = useState<TeamType>();
+  const [teamElement, setTeamElement] = useState<ITeam>();
   const modalRef = useRef<HTMLDialogElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleModal = (e?: TeamType) => {
+  const handleModal = (e?: ITeam) => {
     return () => {
       setTeamElement(e);
       modalRef.current?.showModal();
