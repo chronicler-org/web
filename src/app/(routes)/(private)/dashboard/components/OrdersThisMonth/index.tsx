@@ -1,35 +1,56 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import randomcolor from 'randomcolor';
 import { FC } from 'react';
-import { ChartProps } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
 import Metric from '@/app/components/Metric';
+import {
+  IApiResponse,
+  IProductQuantitySoldVariation,
+  ISaleProductSummary,
+} from '@/interfaces';
 
 type OrdersThisMonthProps = {
   className?: string;
+  summaryProductsSoldResponse: IApiResponse<ISaleProductSummary[]>;
+  productQuantitySoldVariation: IProductQuantitySoldVariation;
 };
 
-const Doughnut = dynamic<ChartProps<'doughnut'>>(
-  () =>
-    import('react-chartjs-2').then((module) => ({
-      default: module.Doughnut,
-    })),
-  {
-    ssr: false,
-    suspense: true,
-  }
-);
+const OrdersThisMonth: FC<OrdersThisMonthProps> = ({
+  className,
+  summaryProductsSoldResponse,
+  productQuantitySoldVariation,
+}) => {
+  const summaryProductsSold = summaryProductsSoldResponse.result;
+  const summaryTotalProductsSold = summaryProductsSoldResponse.meta.total_count;
 
-const OrdersThisMonth: FC<OrdersThisMonthProps> = ({ className }) => {
+  const colors = randomcolor({
+    count: summaryProductsSold.length,
+    seed: 999,
+    format: 'hex',
+    luminosity: 'dark',
+  });
+
+  const labels = summaryProductsSold.map((summary) => summary.model);
+  const quantitiesProductsSold = summaryProductsSold.map(
+    (summary) => summary.total_quantity
+  );
   return (
     <div className={className}>
       <div className='flex flex-1 flex-col gap-4 lg:flex-row'>
         <div className='flex max-h-fit flex-col gap-2'>
-          <Metric value={42.75} rate={2} title='Produtos vendidos neste mês' />
+          <Metric
+            value={productQuantitySoldVariation.total_current_month}
+            rate={productQuantitySoldVariation.percent_variation}
+            title={
+              summaryTotalProductsSold < 2
+                ? 'Produto mais vendidos neste mês'
+                : `Os ${summaryTotalProductsSold} Produto mais vendidos neste mês`
+            }
+          />
           <div className='flex-1'>
             <Doughnut
-              type='doughnut'
               options={{
                 maintainAspectRatio: false,
                 responsive: true,
@@ -45,29 +66,12 @@ const OrdersThisMonth: FC<OrdersThisMonthProps> = ({ className }) => {
                 },
               }}
               data={{
-                labels: [
-                  'Cueca',
-                  'Bermuda',
-                  'Camisa',
-                  'Meia',
-                  'Camiseta',
-                  'Vestido',
-                  'Calça',
-                ],
+                labels,
                 datasets: [
                   {
-                    data: [1, 4, 3, 5, 2, 4, 3],
+                    data: quantitiesProductsSold,
                     borderWidth: 1,
-                    backgroundColor: [
-                      '#22c55e',
-                      '#06b6d4',
-                      '#6366f1',
-                      '#f43f5e',
-                      '#f97316',
-                      '#84cc16',
-                      '#a855f7',
-                      '#ec4899',
-                    ],
+                    backgroundColor: colors,
                   },
                 ],
               }}
