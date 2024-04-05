@@ -4,5 +4,6 @@ export * from './general';
 export * from './sale';
 export * from './tag';
 export * from './team';
+export * from './product';
 export * from './user';
 export * from './attendant';
