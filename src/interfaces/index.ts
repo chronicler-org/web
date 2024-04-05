@@ -4,3 +4,4 @@ export * from './general';
 export * from './tag';
 export * from './user';
 export * from './team';
+export * from './attendant';
