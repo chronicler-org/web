@@ -9,6 +9,7 @@ import {
 import { getStaticData } from '@/utils/getStaticDataUtil';
 import { nextAuthOptions } from '@/utils/nextAuthOptionsUtil';
 
+import { SaleStatus } from '@/enums';
 import OrdersThisMonth from '../components/OrdersThisMonth';
 
 const Page = async () => {
@@ -23,7 +24,7 @@ const Page = async () => {
       getStaticData<ISaleProductSummary[]>(
         `${EndPoints.SALE_PRODUCTS_SUMMARY}`,
         {
-          search: `created_month=${currentMonth}&created_year=${currentYear}&limit=7`,
+          search: `created_month=${currentMonth}&created_year=${currentYear}&limit=7&status=${SaleStatus.PURCHASE_COMPLETED}`,
           authToken: session.authToken,
           cache: 'no-cache',
         }
