@@ -1,5 +1,6 @@
 import { Session, getServerSession } from 'next-auth';
 
+import { SaleStatus } from '@/enums';
 import { EndPoints } from '@/enums/endpointsEnum';
 import {
   IApiResponse,
@@ -10,7 +11,6 @@ import {
 import { getStaticData } from '@/utils/getStaticDataUtil';
 import { nextAuthOptions } from '@/utils/nextAuthOptionsUtil';
 
-import { SaleStatus } from '@/enums';
 import OrdersThisMonth from '../components/OrdersThisMonth';
 
 const Page = async () => {
@@ -38,7 +38,7 @@ const Page = async () => {
       }
     ),
     getStaticData<ISaleItem[]>(`${EndPoints.SALE_ITEM}`, {
-      search: `order=created_at:DESC&limit=6`,
+      search: `order=created_at:DESC&limit=6&status=${SaleStatus.PURCHASE_COMPLETED}`,
       authToken: session.authToken,
       cache: 'no-cache',
     }),
