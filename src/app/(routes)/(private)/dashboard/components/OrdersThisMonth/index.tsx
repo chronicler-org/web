@@ -1,13 +1,16 @@
 'use client';
 
+import Link from 'next/link';
 import randomcolor from 'randomcolor';
 import { FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import Metric from '@/app/components/Metric';
+import { Routes } from '@/enums/routesEnum';
 import {
   IApiResponse,
   IProductQuantitySoldVariation,
+  ISaleItem,
   ISaleProductSummary,
 } from '@/interfaces';
 
@@ -15,10 +18,12 @@ type OrdersThisMonthProps = {
   className?: string;
   summaryProductsSoldResponse: IApiResponse<ISaleProductSummary[]>;
   productQuantitySoldVariation: IProductQuantitySoldVariation;
+  saleItems: ISaleItem[];
 };
 
 const OrdersThisMonth: FC<OrdersThisMonthProps> = ({
   className,
+  saleItems,
   summaryProductsSoldResponse,
   productQuantitySoldVariation,
 }) => {
@@ -81,22 +86,19 @@ const OrdersThisMonth: FC<OrdersThisMonthProps> = ({
         <div className='flex flex-1 flex-col rounded-box bg-base-300 p-2'>
           <ul className='menu menu-lg flex-1 rounded-box'>
             <li className='menu-title'>Últimos produtos vendidos</li>
-            <li>
-              <a>Camisa X</a>
-            </li>
-            <li>
-              <a>Camisa Y</a>
-            </li>
-            <li>
-              <a>Meia Z</a>
-            </li>
-            <li>
-              <a>Bermuda W</a>
-            </li>
+            {saleItems.map(({ product }) => (
+              <li key={product.id}>
+                <a>{product?.model}</a>
+              </li>
+            ))}
           </ul>
-          <button type='button' className='btn btn-neutral w-full text-lg'>
+          <Link
+            href={Routes.PRODUCTS}
+            prefetch={false}
+            className='btn btn-neutral w-full text-lg'
+          >
             Ver todos os produtos
-          </button>
+          </Link>
         </div>
       </div>
     </div>
