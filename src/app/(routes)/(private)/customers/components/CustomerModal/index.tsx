@@ -59,6 +59,7 @@ const CustomerModal: FC<CustomerModalProps> = ({
           <label htmlFor='tag' className='form-control gap-2'>
             <span>Tags</span>
             <Autocomplete
+              placeholder='Buscar tags'
               clearQueryOnClick
               onItemClick={addSelectedTag}
               items={tags
