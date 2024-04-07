@@ -4,18 +4,34 @@ import { FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import Metric from '@/app/components/Metric';
+import { ITotalValueSold, ITotalValuesSoldVariation } from '@/interfaces';
 
 type SalesThisMonthProps = {
   className?: string;
+  totalValuesSold: ITotalValueSold[];
+  totalValuesSoldVariation: ITotalValuesSoldVariation;
 };
 
-const SalesThisMonth: FC<SalesThisMonthProps> = ({ className }) => {
+const SalesThisMonth: FC<SalesThisMonthProps> = ({
+  className,
+  totalValuesSold,
+  totalValuesSoldVariation,
+}) => {
+  const labels = totalValuesSold.map(({ sale_date }) => {
+    const formatter = Intl.DateTimeFormat('pt-BR', {
+      day: 'numeric',
+      month: 'short',
+    });
+
+    return formatter.format(new Date(sale_date));
+  });
+  const data = totalValuesSold.map(({ total_value }) => total_value);
   return (
     <div className={className}>
       <Metric
-        value={1527.56}
+        value={totalValuesSoldVariation.total_current_month}
         currency='R$'
-        rate={2.4}
+        rate={totalValuesSoldVariation.percent_variation}
         title='Valor vendido no mês'
       />
       <div className='flex-1'>
@@ -56,24 +72,10 @@ const SalesThisMonth: FC<SalesThisMonthProps> = ({ className }) => {
             },
           }}
           data={{
-            labels: Array.from(
-              { length: new Date(Date.now()).getDate() },
-              (
-                _,
-                i,
-                x = new Date(),
-                formatter = Intl.DateTimeFormat('pt-BR', {
-                  day: 'numeric',
-                  month: 'short',
-                })
-              ) => x.setDate(i + 1) && formatter.format(x)
-            ),
+            labels,
             datasets: [
               {
-                data: Array.from(
-                  { length: new Date(Date.now()).getDate() },
-                  (_) => 600 * Math.random()
-                ),
+                data,
                 backgroundColor: '#22c55e',
                 borderColor: '#22c55e',
               },
