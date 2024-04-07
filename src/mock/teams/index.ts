@@ -11,6 +11,6 @@ const makeMockTeam = (name: string, id: string) => {
 };
 
 export const teams: ITeam[] = [
-  makeMockTeam('Virutal', `2`),
+  makeMockTeam('Virtual', `2`),
   makeMockTeam('Loja', '4'),
 ];
