@@ -3,18 +3,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { QueryKeys } from '@/enums/queryKesEnum';
-import { IUpdateTagRequestInterface } from '@/interfaces';
-import { tagService } from '@/services/tagService';
+import { teamService } from '@/services/teamService';
 import { mutationError } from '@/utils/mutationErrorUtil';
 
-export const updateTagMutation = () => {
+export const deleteTeamMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (data: IUpdateTagRequestInterface) => tagService.update(data),
+    mutationFn: (id: string) => teamService.remove(id),
     onError: mutationError,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.TAGS] });
-      toast.success(`Olá, a tag foi atualizado com sucesso!`);
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.TEAMS] });
+      toast.success(`Olá, o time foi removido com sucesso!`);
     },
   });
 };

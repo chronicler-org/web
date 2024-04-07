@@ -1,3 +1,3 @@
-export * from './createProductMutation';
-export * from './deleteProductMutation';
-export * from './updateProductMutation';
+export * from './createTagMutation';
+export * from './deleteTagMutation';
+export * from './updateTagMutation';

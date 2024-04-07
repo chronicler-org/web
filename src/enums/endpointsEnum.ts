@@ -19,6 +19,8 @@ export enum EndPoints {
 
   TAG = 'tag',
 
+  TEAM = 'team',
+
   SALE = '/sale',
   SALE_ITEM = '/sale/item',
   SALE_PRODUCTS_SUMMARY = '/sale/products-summary',

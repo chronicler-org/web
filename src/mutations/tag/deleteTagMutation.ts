@@ -6,7 +6,7 @@ import { QueryKeys } from '@/enums/queryKesEnum';
 import { tagService } from '@/services/tagService';
 import { mutationError } from '@/utils/mutationErrorUtil';
 
-export const deleteArticleMutation = () => {
+export const deleteTagMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
