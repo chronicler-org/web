@@ -4,7 +4,7 @@ import { ILoginCredentialsRequest } from '@/interfaces/auth';
 
 import { setupApiService } from './setupApiService';
 
-const api = setupApiService(`${API_URL}${EndPoints.AUTH}`, false);
+const api = setupApiService(`${API_URL}${EndPoints.AUTH}`);
 const { post } = api;
 
 export const authService = {

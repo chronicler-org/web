@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 import { AUTH_TOKEN_EXPIRES_IN, AUTH_TOKEN_NAME } from '@/constants/publicEnv';
 import { EndPoints } from '@/enums/endpointsEnum';
 import { UserRole } from '@/enums/user';
-import { IUser } from '@/interfaces';
+import { IManager, IAttendant } from '@/interfaces';
 import { ILoginCredentialsRequest } from '@/interfaces/auth';
 import { IApiError } from '@/interfaces/general';
 import { authService } from '@/services/authService';
@@ -77,7 +77,7 @@ export const nextAuthOptions: NextAuthOptions = {
       const decodedToken: any = jwt.decode(authToken);
       const role = decodedToken?.role as UserRole;
 
-      const userResponse = await getStaticData<IUser>(
+      const userResponse = await getStaticData<IManager | IAttendant>(
         role === UserRole.MANAGER
           ? EndPoints.MANAGER_ME
           : EndPoints.ATTENDANT_ME,
@@ -86,7 +86,7 @@ export const nextAuthOptions: NextAuthOptions = {
           cache: 'no-store',
         }
       );
-      session.user = userResponse?.result as IUser;
+      session.user = userResponse?.result as IManager | IAttendant;
       session.role = role;
       return {
         ...session,

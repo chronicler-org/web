@@ -6,7 +6,7 @@ export interface IAttendant {
   name: string;
   email: string;
   team: ITeam;
-  birthDate: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  birth_date: Date;
+  created_at: Date;
+  updated_at: Date;
 }

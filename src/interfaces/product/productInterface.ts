@@ -7,6 +7,6 @@ export interface IProduct {
   value: number;
   fabric: string;
   stock: number;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 }
