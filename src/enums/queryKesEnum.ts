@@ -13,4 +13,6 @@ export enum QueryKeys {
 
   CUSTOMERS = 'customers',
   CUSTOMERS_ADDRESSES = 'customersAddresses',
+
+  SALES = 'sales',
 }
