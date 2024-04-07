@@ -9,7 +9,7 @@ export interface ICustomer {
   phone: string;
   birth_date: Date;
   tags: ITag[];
-  Address: ICustomerAddress;
+  address: ICustomerAddress;
   created_at: Date;
   updated_at: Date;
 }
