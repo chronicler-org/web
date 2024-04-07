@@ -15,6 +15,8 @@ export enum EndPoints {
   CUSTOMER = '/customer',
   NEW_CUSTOMER_VARIATION = '/customer/new-variation-percent',
 
+  PRODUCT = 'product',
+
   SALE = '/sale',
   SALE_ITEM = '/sale/item',
   SALE_PRODUCTS_SUMMARY = '/sale/products-summary',
