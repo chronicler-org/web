@@ -19,4 +19,6 @@ export enum EndPoints {
   SALE_ITEM = '/sale/item',
   SALE_PRODUCTS_SUMMARY = '/sale/products-summary',
   PRODUCT_QUANTITY_SOLD_VARIATION = '/sale/product-quantity-sold-variation',
+  TOTAL_VALUES_SOLD = '/sale/total-values-sold',
+  TOTAL_VALUES_SOLD_VARIATION = '/sale/total-values-sold-variation',
 }

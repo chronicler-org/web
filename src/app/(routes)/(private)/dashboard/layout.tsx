@@ -5,7 +5,6 @@ import { FC, ReactNode } from 'react';
 
 type LayoutProps = {
   children: ReactNode;
-  averageDailySales: ReactNode;
   salesThisMonth: ReactNode;
   ordersThisMonth: ReactNode;
   customersThisMonth: ReactNode;
@@ -13,7 +12,6 @@ type LayoutProps = {
 
 const Layout: FC<LayoutProps> = ({
   children,
-  averageDailySales,
   salesThisMonth,
   ordersThisMonth,
   customersThisMonth,
@@ -22,7 +20,7 @@ const Layout: FC<LayoutProps> = ({
     <>
       {children}
       <section className='flex flex-1 flex-col gap-4 py-4 lg:grid lg:grid-cols-5 lg:grid-rows-2 [&>div]:flex [&>div]:flex-col [&>div]:rounded-xl [&>div]:bg-base-200 [&>div]:p-4'>
-        {averageDailySales}
+        {/* {averageDailySales} */}
         {salesThisMonth}
         {ordersThisMonth}
         {customersThisMonth}
