@@ -9,12 +9,14 @@ interface Item {
 type AutocompleteProps = {
   items: Item[];
   onItemClick(id: string): void;
+  placeholder?: string;
   clearQueryOnClick?: Boolean;
 };
 
 const Autocomplete: FC<AutocompleteProps> = ({
   items,
   onItemClick,
+  placeholder,
   clearQueryOnClick = false,
 }) => {
   const [query, setQuery] = useState<string>('');
@@ -38,6 +40,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
   return (
     <div className='dropdown w-full'>
       <input
+        placeholder={placeholder}
         type='text'
         className='input input-bordered w-full'
         value={query}
