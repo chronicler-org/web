@@ -6,4 +6,5 @@ export enum QueryKeys {
   TEAMS = 'teams',
 
   MANAGERS = 'managers',
+  ATTENDANTS = 'attendants',
 }
