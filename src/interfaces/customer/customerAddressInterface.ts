@@ -1,12 +1,12 @@
 export interface ICustomerAddress {
   id: string;
   cep: string;
+  state: string;
   city: string;
-  number: string;
-  estate: string;
-  street_name: string;
-  complement: string;
   neighborhood: string;
+  street_name: string;
+  number: string;
+  complement: string;
   created_at: Date;
   updated_at: Date;
 }

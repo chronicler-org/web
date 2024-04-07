@@ -1,5 +1,6 @@
 'use client';
 
+import { ICustomer, ITag } from '@/interfaces';
 import {
   MagnifyingGlass,
   Plus,
@@ -7,18 +8,32 @@ import {
   SortDescending,
   Funnel,
 } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { customers } from '@/mock/customers';
+import { tags } from '@/mock/tags';
+import CustomerModal from './components/CustomerModal';
 
 const Page = () => {
-  const [sortAscending, setSortAscending] = useState<Boolean>(true);
-  const [UFs] = useState(['SE', 'BA', 'AC', 'RS']);
-  const [tags] = useState(['Black Friday', 'Premium', 'Hot Lead', 'Cold Lead']);
-  const [periods] = useState([
+  const [sortAscending, setSortAscending] = useState<Boolean>(false);
+  const [UFs] = useState<string[]>(['SE', 'BA', 'AC', 'RS']);
+  const [periods] = useState<string[]>([
     'Último dia',
     'Última semana',
     'Último mês',
     'Último ano',
   ]);
+
+  const [customerElement, setCustomerElement] = useState<ICustomer>();
+  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+  const modalRef = useRef<HTMLDialogElement>(null);
+
+  const handleModal = (e?: ICustomer) => {
+    return () => {
+      setCustomerElement(e);
+      setSelectedTags(e ? e.tags : []);
+      modalRef.current?.showModal();
+    };
+  };
 
   return (
     <div className='drawer drawer-end flex gap-2'>
@@ -86,14 +101,14 @@ const Page = () => {
             <h2 className='menu-title'>Tags</h2>
             <ul>
               {tags.map((e) => (
-                <li key={e}>
-                  <label htmlFor={e} className='cursor-pointer'>
+                <li key={e.id}>
+                  <label htmlFor={e.id} className='cursor-pointer'>
                     <input
-                      id={e}
+                      id={e.id}
                       type='checkbox'
                       className='checkbox checkbox-sm'
                     />
-                    <span className='label-text'>{e}</span>
+                    <span className='label-text'>{e.name}</span>
                   </label>
                 </li>
               ))}
@@ -101,6 +116,7 @@ const Page = () => {
           </li>
         </ul>
       </div>
+
       <div className='drawer-content flex-1'>
         <div className='flex flex-1 flex-col gap-2'>
           <div className='flex gap-2'>
@@ -137,10 +153,12 @@ const Page = () => {
               aria-label='Cadastrar novo cliente'
               type='button'
               className='btn btn-square btn-outline text-xl'
+              onClick={handleModal()}
             >
               <Plus />
             </button>
           </div>
+
           <div className='overflow-x-auto'>
             <table className='table'>
               <thead>
@@ -150,28 +168,38 @@ const Page = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className='hover cursor-pointer'>
-                  <td>Carlos Adriano</td>
-                  <td>
-                    <div className='badge badge-info'>{tags[0]}</div>
-                  </td>
-                </tr>
-                <tr className='hover cursor-pointer'>
-                  <td>João Mota</td>
-                  <td>
-                    <div className='badge badge-primary mr-2'>{tags[1]}</div>
-                    <div className='badge badge-error'>{tags[2]}</div>
-                  </td>
-                </tr>
-                <tr className='hover cursor-pointer'>
-                  <td>Vanessa Souza</td>
-                  <td>
-                    <div className='badge badge-secondary'>{tags[3]}</div>
-                  </td>
-                </tr>
+                {(sortAscending ? customers.toReversed() : customers).map(
+                  (customer) => (
+                    <tr
+                      key={customer.id}
+                      onClick={handleModal(customer)}
+                      className='hover cursor-pointer'
+                    >
+                      <td>{customer.name}</td>
+                      <td className='flex gap-2'>
+                        {customer.tags.map((tag) => (
+                          <div
+                            key={tag.id}
+                            style={{ borderColor: tag.color }}
+                            className='badge p-4'
+                          >
+                            {tag.name}
+                          </div>
+                        ))}
+                      </td>
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
           </div>
+
+          <CustomerModal
+            modalRef={modalRef}
+            customerElement={customerElement}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+          />
         </div>
       </div>
     </div>
