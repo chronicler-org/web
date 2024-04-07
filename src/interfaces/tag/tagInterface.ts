@@ -2,6 +2,6 @@ export interface ITag {
   id: string;
   color: string;
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 }

@@ -4,4 +4,6 @@ export enum QueryKeys {
   TAGS = 'tags',
 
   TEAMS = 'teams',
+
+  MANAGERS = 'managers',
 }
