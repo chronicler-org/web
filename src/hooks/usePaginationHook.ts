@@ -33,7 +33,7 @@ export const usePagination = ({ meta }: UseTablePaginationProps) => {
     const query = new URLSearchParams(searchParams.toString());
 
     Object.entries(object).forEach(([key, value]) => {
-      query.set(key, `${value}`);
+      if (typeof value !== 'undefined') query.set(key, `${value}`);
     });
     setSearchParams(query);
   };
