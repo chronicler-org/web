@@ -9,13 +9,13 @@ import {
 } from '@phosphor-icons/react';
 import { Dispatch, FC, SetStateAction, useRef } from 'react';
 
-type AttendantModalProps = {
+type AttendantFormProps = {
   attendantElement?: IAttendant;
   selectedTeam?: ITeam;
   setSelectedTeam: Dispatch<SetStateAction<ITeam | undefined>>;
 };
 
-const AttendantForm: FC<AttendantModalProps> = ({
+const AttendantForm: FC<AttendantFormProps> = ({
   attendantElement,
   selectedTeam,
   setSelectedTeam,
