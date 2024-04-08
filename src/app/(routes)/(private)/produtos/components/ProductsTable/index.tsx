@@ -5,11 +5,13 @@ import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BsPencil, BsSearch, BsTrash } from 'react-icons/bs';
 
+import { FilterCollapse } from '@/app/components/FilterCollpase';
 import {
   Col,
   Column,
+  FormItem,
   Input,
-  Row,
+  Select,
   Table,
   Typography,
 } from '@/app/components/ui';
@@ -18,7 +20,7 @@ import { Card } from '@/app/components/ui/Card';
 import { Modal } from '@/app/components/ui/Modal';
 import { Space } from '@/app/components/ui/Space';
 import { Tooltip } from '@/app/components/ui/Tooltip';
-import { QueryKeys } from '@/enums';
+import { ClothingModel, ProductSize, QueryKeys } from '@/enums';
 import { usePagination, useQueryFactory } from '@/hooks';
 import { IApiMeta, IApiResponse, IProduct } from '@/interfaces';
 import { deleteProductMutation } from '@/mutations/product';
@@ -40,7 +42,7 @@ export const ProductsTable: FC<ProductsTableProps> = ({
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<any>({
     mode: 'onChange',
   });
@@ -100,31 +102,58 @@ export const ProductsTable: FC<ProductsTableProps> = ({
   }, [searchParams]);
   return (
     <Space direction='vertical' size='middle'>
-      <Card bordered={false}>
-        <Row gutter={[24, 24]}>
-          <Col span={24} lg={22}>
-            <Input
-              name='model'
-              placeholder='Buscar pelo modelo'
+      <FilterCollapse
+        onHandleSubmit={handleSubmit(handleChangeFilter)}
+        inputSearch={
+          <Input
+            name='fabric'
+            placeholder='Buscar pelo tecico'
+            size='large'
+            addonBefore={<BsSearch />}
+            control={control}
+            errors={errors}
+          />
+        }
+      >
+        <Col span={24} lg={8}>
+          <FormItem
+            label='Tamanho'
+            name='size'
+            labelCol={{ span: 24 }}
+            errors={errors}
+          >
+            <Select
+              name='size'
               size='large'
-              addonBefore={<BsSearch />}
+              options={Object.entries(ProductSize).map(([, label]) => ({
+                label,
+                value: label,
+              }))}
               control={control}
               errors={errors}
             />
-          </Col>
-          <Col span={24} lg={2}>
-            <Button
-              onClick={handleSubmit(handleChangeFilter)}
-              htmlType='button'
+          </FormItem>
+        </Col>
+        <Col span={24} lg={8}>
+          <FormItem
+            label='Modelo'
+            name='model'
+            labelCol={{ span: 24 }}
+            errors={errors}
+          >
+            <Select
+              name='model'
               size='large'
-              className='w-full'
-              disabled={!isDirty}
-            >
-              Filtrar
-            </Button>
-          </Col>
-        </Row>
-      </Card>
+              options={Object.entries(ClothingModel).map(([, label]) => ({
+                label,
+                value: label,
+              }))}
+              control={control}
+              errors={errors}
+            />
+          </FormItem>
+        </Col>
+      </FilterCollapse>
       <Card
         title='Produtos'
         bordered={false}

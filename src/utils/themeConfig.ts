@@ -12,6 +12,9 @@ export const themeConfig: ThemeConfig = {
       controlHeightLG: 48,
       inputFontSizeLG: 16,
     },
+    Select: {
+      controlHeightLG: 48,
+    },
     Button: {
       controlHeightLG: 48,
     },
