@@ -1,3 +1,5 @@
+'use client';
+
 import classNames from 'classnames';
 import React, { FC, useEffect, useState } from 'react';
 
@@ -8,21 +10,29 @@ interface Item {
 
 type AutocompleteProps = {
   items: Item[];
-  onItemClick(id: string): void;
+  onItemClick: (id: string) => void;
+  onInputChange?: () => void;
   placeholder?: string;
   clearQueryOnClick?: Boolean;
+  defaultValue?: string;
 };
 
 const Autocomplete: FC<AutocompleteProps> = ({
   items,
   onItemClick,
+  onInputChange,
   placeholder,
   clearQueryOnClick = false,
+  defaultValue,
 }) => {
   const [query, setQuery] = useState<string>('');
   const [visibleItems, setVisibleItems] = useState<Item[]>([]);
 
   items.sort((a, b) => a.name.localeCompare(b.name));
+
+  useEffect(() => {
+    setQuery(defaultValue || '');
+  }, [defaultValue]);
 
   useEffect(() => {
     if (!query) {
@@ -44,7 +54,10 @@ const Autocomplete: FC<AutocompleteProps> = ({
         type='text'
         className='input input-bordered w-full'
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          if (onInputChange) onInputChange();
+        }}
         tabIndex={0}
       />
       <div className='dropdown-content top-14 max-h-96 w-full overflow-auto rounded-md bg-base-200'>
