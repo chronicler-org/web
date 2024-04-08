@@ -3,7 +3,7 @@ import { ThemeConfig } from 'antd';
 export const themeConfig: ThemeConfig = {
   token: {
     fontSize: 16,
-    colorPrimary: '#7480ff',
+    colorPrimary: '#009AFA',
     colorBgBase: '#15191e',
     colorTextPlaceholder: '#a6adbb',
   },
@@ -11,6 +11,9 @@ export const themeConfig: ThemeConfig = {
     Input: {
       controlHeightLG: 48,
       inputFontSizeLG: 16,
+    },
+    Button: {
+      boxShadow: '',
     },
   },
 };

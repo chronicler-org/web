@@ -1,4 +1,3 @@
-import { ICreateProductFormInterface } from '../form';
+import { ICreateProductForm } from '../form';
 
-export interface ICreateProductRequestInterface
-  extends ICreateProductFormInterface {}
+export interface ICreateProductRequest extends ICreateProductForm {}

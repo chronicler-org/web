@@ -1,6 +1,5 @@
 import { IUpdateProductFormInterface } from '../form';
 
-export interface IUpdateProductRequestInterface
-  extends IUpdateProductFormInterface {
+export interface IUpdateProductRequest extends IUpdateProductFormInterface {
   id: string;
 }
