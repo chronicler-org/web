@@ -1,5 +1,10 @@
 import Autocomplete from '@/app/components/Autocomplete';
-import { ICustomerCare, ICustomer, ITeam } from '@/interfaces';
+import {
+  ICustomerCare,
+  ICustomer,
+  ITeam,
+  ICustomerCareEvaluation,
+} from '@/interfaces';
 import { customers } from '@/mock/customers';
 import { teams } from '@/mock/teams';
 import { CalendarDots } from '@phosphor-icons/react';
@@ -7,6 +12,7 @@ import { Dispatch, FC, SetStateAction, useRef } from 'react';
 
 type CustomerCareProps = {
   customerCareElement?: ICustomerCare;
+  customerCareEvaluationElement?: ICustomerCareEvaluation;
   selectedCustomer?: ICustomer;
   setSelectedCustomer: Dispatch<SetStateAction<ICustomer | undefined>>;
   selectedTeam?: ITeam;
@@ -16,6 +22,7 @@ type CustomerCareProps = {
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const CustomerCareForm: FC<CustomerCareProps> = ({
   customerCareElement,
+  customerCareEvaluationElement,
   selectedCustomer,
   setSelectedCustomer,
   selectedTeam,
@@ -84,6 +91,46 @@ const CustomerCareForm: FC<CustomerCareProps> = ({
               required
             />
           </div>
+        </label>
+
+        <label
+          className='form-control gap-2'
+          htmlFor='score'
+          aria-label='Avaliação'
+        >
+          <span>Avaliação</span>
+          <input
+            id='score'
+            name='score'
+            type='range'
+            min='0'
+            max='10'
+            step='1'
+            className='range'
+            defaultValue={customerCareEvaluationElement?.score}
+            required
+          />
+          <div className='flex w-full justify-between px-2 text-xs'>
+            {Array.from({ length: 11 }).map((_, i) => (
+              /* eslint-disable react/no-array-index-key */
+              <span key={i}>{i}</span>
+            ))}
+          </div>
+        </label>
+
+        <label
+          className='form-control gap-2'
+          htmlFor='description'
+          aria-label='Observações da avaliação'
+        >
+          <span>Observações da avaliação</span>
+          <textarea
+            id='description'
+            name='description'
+            className='textarea textarea-bordered h-24'
+            defaultValue={customerCareEvaluationElement?.description}
+            required
+          />
         </label>
       </form>
 
