@@ -4,7 +4,9 @@ import { Session, getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 
+import { Routes } from '@/enums/routesEnum';
 import { nextAuthOptions } from '@/utils/nextAuthOptionsUtil';
+import Link from 'next/link';
 
 type LayoutProps = {
   children: ReactNode;
@@ -46,16 +48,16 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
               <ul className='menu menu-horizontal'>
                 {/* Navbar menu content */}
                 <li>
-                  <a>Clientes</a>
+                  <Link href={`/${Routes.CUSTOMERS}`}>Clientes</Link>
                 </li>
                 <li>
-                  <a>Atendentes</a>
+                  <Link href={`/${Routes.ATTENDANTS}`}>Atendentes</Link>
                 </li>
                 <li>
-                  <a>Produtos</a>
+                  <Link href={`/${Routes.PRODUCTS}`}>Produtos</Link>
                 </li>
                 <li>
-                  <a>Vendas</a>
+                  <Link href={`/${Routes.SALES}`}>Vendas</Link>
                 </li>
               </ul>
             </div>
@@ -85,16 +87,16 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
         <ul className='menu min-h-full w-80 bg-base-200 p-4 text-lg'>
           {/* Sidebar content */}
           <li>
-            <a>Clientes</a>
+            <Link href={`/${Routes.CUSTOMERS}`}>Clientes</Link>
           </li>
           <li>
-            <a>Atendentes</a>
+            <Link href={`/${Routes.ATTENDANTS}`}>Atendentes</Link>
           </li>
           <li>
-            <a>Produtos</a>
+            <Link href={`/${Routes.PRODUCTS}`}>Produtos</Link>
           </li>
           <li>
-            <a>Vendas</a>
+            <Link href={`/${Routes.SALES}`}>Vendas</Link>
           </li>
         </ul>
       </div>
