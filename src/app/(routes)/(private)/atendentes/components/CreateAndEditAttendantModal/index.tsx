@@ -35,7 +35,7 @@ type CreateAndEditAttendantModalProps = {
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'YYYY/MM/DD';
 
 export const CreateAndEditAttendantModal: FC<
   CreateAndEditAttendantModalProps
@@ -79,13 +79,15 @@ export const CreateAndEditAttendantModal: FC<
     reset,
   } = useForm<ICreateAttendantForm>({
     mode: 'onBlur',
-    resolver: yupResolver(schema as any),
+    resolver: yupResolver(schema) as any,
     defaultValues: {
       cpf: attendant?.cpf,
       name: attendant?.name,
       team_id: attendant?.team?.id,
       team_name: attendant?.team?.name,
-      birth_date: attendant?.birth_date,
+      ...(attendant?.birth_date && {
+        birth_date: dayjs(attendant?.birth_date, dateFormat),
+      }),
       email: attendant?.email,
     },
   });
@@ -134,7 +136,9 @@ export const CreateAndEditAttendantModal: FC<
       name: attendant?.name,
       team_id: attendant?.team?.id,
       team_name: attendant?.team?.name,
-      birth_date: attendant?.birth_date,
+      ...(attendant?.birth_date && {
+        birth_date: dayjs(attendant?.birth_date, dateFormat),
+      }),
       email: attendant?.email,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

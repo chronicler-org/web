@@ -36,7 +36,7 @@ type CreateAndEditManagerModalProps = {
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'YYYY/MM/DD';
 
 export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
   onRequestClose,
@@ -54,7 +54,7 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
       .min(10, 'O campo deve ter pelo menos 10 caracteres')
       .max(50, 'O campo deve ter no máximo 50 caracteres'),
 
-    ...(manager && {
+    ...(!manager && {
       password: yup
         .string()
         .required('Campo obrigatório')
@@ -82,13 +82,15 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
     reset,
   } = useForm<ICreateManagerForm>({
     mode: 'onBlur',
-    resolver: yupResolver(schema as any),
+    resolver: yupResolver(schema) as any,
     defaultValues: {
       cpf: manager?.cpf,
       name: manager?.name,
       team_id: manager?.team?.id,
       team_name: manager?.team?.name,
-      birth_date: manager?.birth_date,
+      ...(manager?.birth_date && {
+        birth_date: dayjs(manager?.birth_date, dateFormat),
+      }),
       email: manager?.email,
     },
   });
@@ -137,7 +139,9 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
       name: manager?.name,
       team_id: manager?.team?.id,
       team_name: manager?.team?.name,
-      birth_date: manager?.birth_date,
+      ...(manager?.birth_date && {
+        birth_date: dayjs(manager?.birth_date, dateFormat),
+      }),
       email: manager?.email,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -193,8 +197,8 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
                 });
               }
             }}
-            control={control}
-            errors={errors}
+            control={control as any}
+            errors={errors as any}
           />
         </FormItem>
 
