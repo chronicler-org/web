@@ -12,7 +12,7 @@ const { post, get, patch, delete: destroy } = api;
 
 export const attendantService = {
   all: async (query?: string) => {
-    const res = await get(`${query || ''}`);
+    const res = await get(`?${query || ''}`);
     return res.data;
   },
   single: async (id: string) => {

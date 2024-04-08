@@ -15,7 +15,7 @@ const { post, get, delete: destroy, patch } = api;
 
 export const customerService = {
   allCustomers: async (query?: string) => {
-    const res = await get(`${query || ''}`);
+    const res = await get(`?${query || ''}`);
     return res.data;
   },
   singleCustomer: async (id: string) => {

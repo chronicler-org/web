@@ -60,7 +60,7 @@ export const ProductsTable: FC<ProductsTableProps> = ({
   } = useQueryFactory<IProduct[]>({
     queryKey: [QueryKeys.PRODUCTS, searchParams],
     initialData: initalProductsResponse,
-    queryFn: () => productService.all(searchParams.toString()),
+    queryFn: () => productService.all(`${searchParams.toString()}`),
   });
   const loading = isRefetching || isLoading;
   const products = productsResponse?.result || [];
@@ -107,7 +107,7 @@ export const ProductsTable: FC<ProductsTableProps> = ({
         inputSearch={
           <Input
             name='fabric'
-            placeholder='Buscar pelo tecico'
+            placeholder='Buscar pelo tecido'
             size='large'
             addonBefore={<BsSearch />}
             control={control}

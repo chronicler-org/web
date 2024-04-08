@@ -12,7 +12,7 @@ const { post, get, delete: destroy, patch } = api;
 
 export const saleService = {
   allSales: async (query?: string) => {
-    const res = await get(`${query || ''}`);
+    const res = await get(`?${query || ''}`);
     return res.data;
   },
   singleSale: async (id: string) => {

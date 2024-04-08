@@ -1,6 +1,6 @@
 import {
-  InputNumber as InputNumberAntd,
-  InputNumberProps as InputNumberAntdProps,
+  ColorPicker as ColorPickerAntd,
+  ColorPickerProps as ColorPickerAntdProps,
 } from 'antd';
 import {
   Control,
@@ -13,20 +13,20 @@ import {
   get,
 } from 'react-hook-form';
 
-type InputNumberProps<T extends FieldValues> = InputNumberAntdProps & {
+type ColorPickerProps<T extends FieldValues> = ColorPickerAntdProps & {
   name: Path<T>;
   control?: Control<T>;
   errors?: Partial<DeepMap<T, FieldError>>;
   rules?: RegisterOptions;
 };
 
-export const InputNumber = <T extends FieldValues>({
+export const ColorPicker = <T extends FieldValues>({
   name,
   errors,
   control,
   rules,
   ...rest
-}: InputNumberProps<T>) => {
+}: ColorPickerProps<T>) => {
   const errorMessage = get(errors, name);
   const hasError = !!(errors && errorMessage);
 
@@ -37,14 +37,15 @@ export const InputNumber = <T extends FieldValues>({
         control={control}
         rules={rules}
         render={({ field }) => (
-          <InputNumberAntd
+          <ColorPickerAntd
             {...rest}
             {...field}
+            onChange={(value) => field.onChange(`#${value.toHex()}`)}
             {...(hasError && { status: 'error' })}
           />
         )}
       />
     );
 
-  return <InputNumberAntd {...rest} {...(hasError && { status: 'error' })} />;
+  return <ColorPickerAntd {...rest} {...(hasError && { status: 'error' })} />;
 };
