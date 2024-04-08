@@ -13,7 +13,7 @@ export const themeConfig: ThemeConfig = {
       inputFontSizeLG: 16,
     },
     Button: {
-      boxShadow: '',
+      controlHeightLG: 48,
     },
   },
 };
