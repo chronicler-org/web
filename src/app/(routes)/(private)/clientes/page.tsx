@@ -11,7 +11,7 @@ import {
 import { useRef, useState } from 'react';
 import { customers } from '@/mock/customers';
 import { tags } from '@/mock/tags';
-import CustomerModal from './components/CustomerModal';
+import CustomerForm from './components/CustomerForm';
 
 const Page = () => {
   const [sortAscending, setSortAscending] = useState<Boolean>(false);
@@ -194,12 +194,19 @@ const Page = () => {
             </table>
           </div>
 
-          <CustomerModal
-            modalRef={modalRef}
-            customerElement={customerElement}
-            selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
-          />
+          <dialog
+            ref={modalRef}
+            id='attendant-modal'
+            className='modal modal-bottom sm:modal-middle'
+          >
+            <div className='modal-box'>
+              <CustomerForm
+                customerElement={customerElement}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+              />
+            </div>
+          </dialog>
         </div>
       </div>
     </div>

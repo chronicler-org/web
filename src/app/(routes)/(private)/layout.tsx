@@ -33,7 +33,7 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
             </a>
           </div>
           <div className='navbar-end gap-2'>
-            <div className='flex-none md:hidden'>
+            <div className='flex-none lg:hidden'>
               {/* eslint jsx-a11y/label-has-associated-control: ["error", { assert: "either" } ] */}
               <label
                 htmlFor='drawer-toggle'
@@ -44,7 +44,7 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
               </label>
             </div>
 
-            <div className='hidden flex-none md:block'>
+            <div className='hidden flex-none lg:block'>
               <ul className='menu menu-horizontal'>
                 {/* Navbar menu content */}
                 <li>
@@ -58,6 +58,15 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
                 </li>
                 <li>
                   <Link href={`/${Routes.SALES}`}>Vendas</Link>
+                </li>
+                <li>
+                  <Link href={`/${Routes.CUSTOMER_CARE}`}>Atendimentos</Link>
+                </li>
+                <li>
+                  <Link href={`/${Routes.TAGS}`}>Tags</Link>
+                </li>
+                <li>
+                  <Link href={`/${Routes.TEAMS}`}>Equipes</Link>
                 </li>
               </ul>
             </div>
@@ -78,7 +87,7 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
         </div>
       </div>
 
-      <div className='drawer-side'>
+      <div className='drawer-side z-20'>
         <label
           htmlFor='drawer-toggle'
           aria-label='Fecha menu'
@@ -97,6 +106,15 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
           </li>
           <li>
             <Link href={`/${Routes.SALES}`}>Vendas</Link>
+          </li>
+          <li>
+            <Link href={`/${Routes.CUSTOMER_CARE}`}>Atendimentos</Link>
+          </li>
+          <li>
+            <Link href={`/${Routes.TAGS}`}>Tags</Link>
+          </li>
+          <li>
+            <Link href={`/${Routes.TEAMS}`}>Equipes</Link>
           </li>
         </ul>
       </div>

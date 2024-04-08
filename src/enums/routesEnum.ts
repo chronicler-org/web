@@ -1,11 +1,17 @@
 export enum Routes {
   ACCOUNT = 'dashboard',
 
-  CUSTOMERS = 'customers',
+  CUSTOMERS = 'clientes',
 
-  PRODUCTS = 'products',
+  PRODUCTS = 'produtos',
 
-  ATTENDANTS = 'attendants',
+  ATTENDANTS = 'atendentes',
 
   SALES = 'vendas',
+
+  CUSTOMER_CARE = 'atendimentos',
+
+  TAGS = 'tags',
+
+  TEAMS = 'equipes',
 }
