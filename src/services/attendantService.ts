@@ -1,13 +1,10 @@
 import { API_URL } from '@/constants/publicEnv';
 import { EndPoints } from '@/enums/endpointsEnum';
-import {
-  ICreateAttendantRequestInterface,
-  IUpdateAttendantRequestInterface,
-} from '@/interfaces';
+import { ICreateAttendantRequest, IUpdateAttendantRequest } from '@/interfaces';
 
 import { setupApiService } from './setupApiService';
 
-const api = setupApiService(`${API_URL}${EndPoints.ATTENDANT}`);
+const api = setupApiService(`${API_URL}/${EndPoints.ATTENDANT}`);
 const { post, get, patch, delete: destroy } = api;
 
 export const attendantService = {
@@ -19,8 +16,8 @@ export const attendantService = {
     const res = await get(`/${id}`);
     return res.data;
   },
-  create: (manager: ICreateAttendantRequestInterface) => post('', manager),
-  update: ({ id, ...rest }: IUpdateAttendantRequestInterface) =>
+  create: (manager: ICreateAttendantRequest) => post('', manager),
+  update: ({ id, ...rest }: IUpdateAttendantRequest) =>
     patch(`/${id}`, { ...rest }),
   remove: (id: string) => destroy(`/${id}`),
 };

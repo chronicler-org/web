@@ -10,14 +10,18 @@ import { IApiMeta } from '@/interfaces/general';
 import { Pagination, PaginationProps } from '../../Pagination';
 import { Space } from '../../Space';
 
-export type TableProps = TableAntdProps<AnyObject> & {
+export type TableProps<T> = TableAntdProps<T> & {
   meta?: IApiMeta;
   pagination: PaginationProps;
 };
 
 export interface TablePaginationConfig extends TablePaginationConfigAntd {}
 
-export const Table = ({ meta, pagination, ...props }: TableProps) => {
+export const Table = <T extends AnyObject = any>({
+  meta,
+  pagination,
+  ...props
+}: TableProps<T>) => {
   if (meta) {
     const totalResultsAlredyViewed =
       meta.page === meta?.total_pages
@@ -26,7 +30,7 @@ export const Table = ({ meta, pagination, ...props }: TableProps) => {
 
     return (
       <Space direction='vertical' size='middle'>
-        <TableAntd {...props} pagination={false} />
+        <TableAntd<T> {...props} pagination={false} />
         <Pagination
           size='default'
           current={meta?.page}

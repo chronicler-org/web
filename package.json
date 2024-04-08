@@ -30,6 +30,7 @@
     "date-fns": "^3.6.0",
     "date-fns-tz": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "next": "14.1.0",
     "next-auth": "^4.24.7",
     "nookies": "^2.5.2",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/lodash": "^4.17.0",
     "@types/node": "^20",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "^18",

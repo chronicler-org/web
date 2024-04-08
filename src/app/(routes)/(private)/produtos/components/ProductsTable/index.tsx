@@ -170,9 +170,9 @@ export const ProductsTable: FC<ProductsTableProps> = ({
           </Tooltip>
         }
       >
-        <Table
+        <Table<IProduct>
           dataSource={products}
-          rowKey={(record) => record._id}
+          rowKey={(record) => record.id}
           meta={productsResponse?.meta as IApiMeta}
           pagination={{
             onChange: handleChangePagination,
