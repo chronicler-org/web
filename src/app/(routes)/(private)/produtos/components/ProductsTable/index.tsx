@@ -29,11 +29,12 @@ import { displayDate } from '@/utils/displayDateUtil';
 
 import { CreateAndEditProductModal } from '../CreateAndEditProductModal';
 
-const { Paragraph, Text } = Typography;
-
 type ProductsTableProps = {
   initalProductsResponse: IApiResponse<IProduct[]>;
 };
+
+const { Paragraph, Text } = Typography;
+
 export const ProductsTable: FC<ProductsTableProps> = ({
   initalProductsResponse,
 }) => {
