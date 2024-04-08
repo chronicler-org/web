@@ -11,7 +11,7 @@ const makeMockCustomer = (name: string, id: string, tags: ITag[]) => {
     phone: '79999999999',
     birth_date: now,
     tags,
-    Address: {
+    address: {
       id: '42',
       cep: '49000000',
       city: 'Aracaju',
