@@ -1,4 +1,3 @@
-import { ICreateManagerFormInterface } from '../form';
+import { ICreateManagerForm } from '../form';
 
-export interface ICreateManagerRequestInterface
-  extends ICreateManagerFormInterface {}
+export interface ICreateManagerRequest extends ICreateManagerForm {}

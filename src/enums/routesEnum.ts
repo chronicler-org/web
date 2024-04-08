@@ -14,4 +14,6 @@ export enum Routes {
   TAGS = 'tags',
 
   TEAMS = 'equipes',
+
+  MANAGERS = 'gerentes',
 }

@@ -54,6 +54,9 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
                   <Link href={`/${Routes.ATTENDANTS}`}>Atendentes</Link>
                 </li>
                 <li>
+                  <Link href={`/${Routes.MANAGERS}`}>Gerentes</Link>
+                </li>
+                <li>
                   <Link href={`/${Routes.PRODUCTS}`}>Produtos</Link>
                 </li>
                 <li>
@@ -100,6 +103,9 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
           </li>
           <li>
             <Link href={`/${Routes.ATTENDANTS}`}>Atendentes</Link>
+          </li>
+          <li>
+            <Link href={`/${Routes.MANAGERS}`}>Gerentes</Link>
           </li>
           <li>
             <Link href={`/${Routes.PRODUCTS}`}>Produtos</Link>

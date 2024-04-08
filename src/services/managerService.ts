@@ -1,13 +1,10 @@
 import { API_URL } from '@/constants/publicEnv';
 import { EndPoints } from '@/enums/endpointsEnum';
-import {
-  ICreateManagerRequestInterface,
-  IUpdateManagerRequestInterface,
-} from '@/interfaces';
+import { ICreateManagerRequest, IUpdateManagerRequest } from '@/interfaces';
 
 import { setupApiService } from './setupApiService';
 
-const api = setupApiService(`${API_URL}${EndPoints.MANAGER}`);
+const api = setupApiService(`${API_URL}/${EndPoints.MANAGER}`);
 const { post, get, patch, delete: destroy } = api;
 
 export const managerService = {
@@ -19,8 +16,8 @@ export const managerService = {
     const res = await get(`/${id}`);
     return res.data;
   },
-  create: (manager: ICreateManagerRequestInterface) => post('', manager),
-  update: ({ id, ...rest }: IUpdateManagerRequestInterface) =>
+  create: (manager: ICreateManagerRequest) => post('', manager),
+  update: ({ id, ...rest }: IUpdateManagerRequest) =>
     patch(`/${id}`, { ...rest }),
   remove: (id: string) => destroy(`/${id}`),
 };

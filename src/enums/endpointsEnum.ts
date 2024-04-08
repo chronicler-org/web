@@ -6,7 +6,7 @@ export enum EndPoints {
   AUTH = '/auth',
   AUTH_LOGIN = '/login',
 
-  MANAGER = '/manager',
+  MANAGER = 'manager',
   MANAGER_ME = '/manager/me',
 
   ATTENDANT = 'attendant',
