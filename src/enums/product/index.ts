@@ -1,2 +1,2 @@
 export * from './clothingModelEnum';
-export * from './sizeEnum';
+export * from './productSizeEnum';

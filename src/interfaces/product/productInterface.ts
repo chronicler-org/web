@@ -1,9 +1,9 @@
-import { ClothingModel, Size } from '@/enums/product';
+import { ClothingModel, ProductSize } from '@/enums/product';
 
 export interface IProduct {
   id: string;
   model: ClothingModel;
-  size: Size;
+  size: ProductSize;
   value: number;
   fabric: string;
   stock: number;
