@@ -21,6 +21,7 @@ import {
   IAttendant,
   ICreateAttendantForm,
   ICreateAttendantRequest,
+  ITeam,
 } from '@/interfaces';
 import { createAttendantMutation, updateAttendantMutation } from '@/mutations';
 import { fetchTeamOptions } from '@/utils/fetchTeamOptions';
@@ -30,6 +31,7 @@ type CreateAndEditAttendantModalProps = {
   onRequestClose: () => void;
   isOpen: boolean;
   attendant?: IAttendant | null;
+  team: ITeam;
 };
 
 dayjs.extend(weekday);
@@ -39,7 +41,7 @@ const dateFormat = 'YYYY/MM/DD';
 
 export const CreateAndEditAttendantModal: FC<
   CreateAndEditAttendantModalProps
-> = ({ onRequestClose, isOpen, attendant }) => {
+> = ({ onRequestClose, isOpen, attendant, team }) => {
   const schema = yup.object().shape({
     cpf: yup
       .string()
@@ -83,8 +85,8 @@ export const CreateAndEditAttendantModal: FC<
     defaultValues: {
       cpf: attendant?.cpf,
       name: attendant?.name,
-      team_id: attendant?.team?.id,
-      team_name: attendant?.team?.name,
+      team_id: attendant?.team?.id || team.id,
+      team_name: attendant?.team?.name || team.name,
       ...(attendant?.birth_date && {
         birth_date: dayjs(attendant?.birth_date, dateFormat),
       }),
@@ -96,8 +98,8 @@ export const CreateAndEditAttendantModal: FC<
     reset({
       cpf: '',
       name: '',
-      team_id: '',
-      team_name: '',
+      team_id: team.id,
+      team_name: team.name,
       password: '',
       birth_date: undefined,
       email: '',
@@ -134,8 +136,8 @@ export const CreateAndEditAttendantModal: FC<
     reset({
       cpf: attendant?.cpf,
       name: attendant?.name,
-      team_id: attendant?.team?.id,
-      team_name: attendant?.team?.name,
+      team_id: attendant?.team?.id || team.id,
+      team_name: attendant?.team?.name || team.name,
       ...(attendant?.birth_date && {
         birth_date: dayjs(attendant?.birth_date, dateFormat),
       }),
