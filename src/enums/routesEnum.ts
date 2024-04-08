@@ -4,4 +4,8 @@ export enum Routes {
   CUSTOMERS = 'customers',
 
   PRODUCTS = 'products',
+
+  ATTENDANTS = 'attendants',
+
+  SALES = 'vendas',
 }
