@@ -1,3 +1,3 @@
-import { ICreateTeamFormInterface } from './createTeamFormInterface';
+import { ICreateTeamForm } from './createTeamFormInterface';
 
-export interface IUpdateTeamFormInterface extends ICreateTeamFormInterface {}
+export interface IUpdateTeamForm extends ICreateTeamForm {}

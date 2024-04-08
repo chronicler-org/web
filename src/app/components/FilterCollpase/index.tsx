@@ -33,7 +33,12 @@ export const FilterCollapse: FC<FilterCollapseProps> = ({
           {inputSearch}
         </Col>
         <RenderIf condition={!isExpanded}>
-          <Col span={24} sm={20} md={21} lg={2}>
+          <Col
+            span={24}
+            sm={!children ? 24 : 20}
+            md={!children ? 24 : 21}
+            lg={2}
+          >
             <Button
               onClick={onHandleSubmit}
               htmlType='button'

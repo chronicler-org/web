@@ -1,4 +1,4 @@
 import { ITeam } from '../teamInterface';
 
-export interface ICreateTeamFormInterface
+export interface ICreateTeamForm
   extends Omit<ITeam, 'id' | 'created_at' | 'updated_at'> {}

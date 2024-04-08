@@ -1,5 +1,5 @@
-import { IUpdateTeamFormInterface } from '../form';
+import { IUpdateTeamForm } from '../form';
 
-export interface IUpdateTeamRequestInterface extends IUpdateTeamFormInterface {
+export interface IUpdateTeamRequest extends IUpdateTeamForm {
   id: string;
 }

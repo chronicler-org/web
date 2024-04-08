@@ -1,4 +1,5 @@
 import { Session, getServerSession } from 'next-auth';
+import { Metadata } from 'next';
 
 import { EndPoints } from '@/enums/endpointsEnum';
 import { IApiResponse, ITag } from '@/interfaces';
@@ -6,6 +7,10 @@ import { getStaticData } from '@/utils/getStaticDataUtil';
 import { nextAuthOptions } from '@/utils/nextAuthOptionsUtil';
 
 import { TagsTable } from './components/TagsTable';
+
+export const metadata: Metadata = {
+  title: 'Tags - Chronicler',
+};
 
 const Page = async () => {
   const session = (await getServerSession(nextAuthOptions)) as Session;
