@@ -24,5 +24,8 @@ export const themeConfig: ThemeConfig = {
     ColorPicker: {
       controlHeightLG: 48,
     },
+    DatePicker: {
+      controlHeightLG: 48,
+    },
   },
 };

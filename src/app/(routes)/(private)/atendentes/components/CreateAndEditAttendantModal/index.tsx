@@ -1,16 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  CalendarDots,
-  Envelope,
-  IdentificationCard,
-  User,
-} from '@phosphor-icons/react';
+import { Envelope, IdentificationCard, User } from '@phosphor-icons/react';
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
+import weekday from 'dayjs/plugin/weekday';
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { BsShieldLock } from 'react-icons/bs';
 import * as yup from 'yup';
 
 import { Modal } from '@/app/components/ui/Modal';
 import {
+  DatePicker,
   DebounceSelect,
   DefaultOptionType,
   FormItem,
@@ -31,30 +31,44 @@ type CreateAndEditAttendantModalProps = {
   attendant?: IAttendant | null;
 };
 
-const schema = yup.object().shape({
-  cpf: yup
-    .string()
-    .required('Campo obrigatório')
-    .length(11, 'O campo deve ter 11 caracteres'),
-  name: yup
-    .string()
-    .required('Campo obrigatório')
-    .min(10, 'O campo deve ter pelo menos 10 caracteres')
-    .max(50, 'O campo deve ter no máximo 50 caracteres'),
-  team_id: yup.string().uuid('Campo obrigatório').required('Campo obrigatório'),
-  birth_date: yup
-    .string()
-    .required('Campo obrigatório')
-    .min(0, 'Valor mínimo é 0'),
-  email: yup
-    .string()
-    .email('Campo é do tipo e-mail')
-    .required('Campo obrigatório'),
-});
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+
+const dateFormat = 'DD/MM/YYYY';
 
 export const CreateAndEditAttendantModal: FC<
   CreateAndEditAttendantModalProps
 > = ({ onRequestClose, isOpen, attendant }) => {
+  const schema = yup.object().shape({
+    cpf: yup
+      .string()
+      .required('Campo obrigatório')
+      .length(11, 'O campo deve ter 11 caracteres'),
+    name: yup
+      .string()
+      .required('Campo obrigatório')
+      .min(10, 'O campo deve ter pelo menos 10 caracteres')
+      .max(50, 'O campo deve ter no máximo 50 caracteres'),
+    password: yup
+      .string()
+      .required('Campo obrigatório')
+      .min(8, 'O campo deve ter pelo menos 8 caracteres'),
+    ...(attendant && {
+      team_id: yup
+        .string()
+        .uuid('Campo obrigatório')
+        .required('Campo obrigatório'),
+    }),
+    birth_date: yup
+      .date()
+      .required('Campo obrigatório')
+      .max(new Date(), 'A data deve ser anterior ou igual ao momento atual'),
+    email: yup
+      .string()
+      .email('Campo é do tipo e-mail')
+      .required('Campo obrigatório'),
+  });
+
   const {
     handleSubmit,
     control,
@@ -63,13 +77,13 @@ export const CreateAndEditAttendantModal: FC<
     reset,
   } = useForm<ICreateAttendantForm>({
     mode: 'onBlur',
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema as any),
     defaultValues: {
       cpf: attendant?.cpf,
       name: attendant?.name,
       team_id: attendant?.team?.id,
       team_name: attendant?.team?.name,
-      birth_date: attendant?.birth_date.toString(),
+      birth_date: attendant?.birth_date,
       email: attendant?.email,
     },
   });
@@ -80,7 +94,8 @@ export const CreateAndEditAttendantModal: FC<
       name: '',
       team_id: '',
       team_name: '',
-      birth_date: '',
+      password: '',
+      birth_date: undefined,
       email: '',
     });
     onRequestClose();
@@ -117,7 +132,7 @@ export const CreateAndEditAttendantModal: FC<
       name: attendant?.name,
       team_id: attendant?.team?.id,
       team_name: attendant?.team?.name,
-      birth_date: attendant?.birth_date.toString(),
+      birth_date: attendant?.birth_date,
       email: attendant?.email,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -214,24 +229,41 @@ export const CreateAndEditAttendantModal: FC<
           />
         </FormItem>
 
-        <label
-          className='form-control gap-2'
-          htmlFor='brith'
-          aria-label='Data de nascimento'
+        <FormItem
+          label='Data de nascimento'
+          name='birth_date'
+          labelCol={{ span: 24 }}
+          errors={errors}
         >
-          <span>Data de nascimento</span>
-          <div className='input input-bordered flex w-full items-center gap-2'>
-            <CalendarDots size={20} />
-            <input
-              id='birth'
-              name='birthDate'
-              type='date'
-              placeholder='dd/MM/yyyy'
-              className='min-w-0 grow'
-              required
-            />
-          </div>
-        </label>
+          <DatePicker
+            name='birth_date'
+            size='large'
+            maxDate={dayjs()}
+            placeholder='dd/MM/yyyy'
+            className='!w-full'
+            format={dateFormat}
+            control={control}
+            errors={errors}
+          />
+        </FormItem>
+
+        <FormItem
+          label='Senha'
+          name='password'
+          required
+          labelCol={{ span: 24 }}
+          errors={errors}
+        >
+          <Input
+            name='password'
+            size='large'
+            type='password'
+            required
+            addonBefore={<BsShieldLock />}
+            control={control}
+            errors={errors}
+          />
+        </FormItem>
       </form>
     </Modal>
   );

@@ -7,5 +7,6 @@ export interface ICreateAttendantForm
   > {
   team_id: string;
   team_name?: string;
-  birth_date: string;
+  password?: string;
+  birth_date: Date;
 }

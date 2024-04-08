@@ -201,7 +201,13 @@ export const AttendantsTable: FC<AttendantsTableProps> = ({
                 </Paragraph>
                 <Paragraph type='secondary' strong>
                   Data de aniversário:&nbsp;
-                  <Text strong>{record.birth_date as any}</Text>
+                  <Text strong>
+                    {displayDate(record.birth_date, {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                    })}
+                  </Text>
                 </Paragraph>
                 <Paragraph type='secondary' strong>
                   Equipe:&nbsp;
