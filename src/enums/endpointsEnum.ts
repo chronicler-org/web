@@ -9,7 +9,7 @@ export enum EndPoints {
   MANAGER = '/manager',
   MANAGER_ME = '/manager/me',
 
-  ATTENDANT = '/attendant',
+  ATTENDANT = 'attendant',
   ATTENDANT_ME = '/attendant/me',
 
   CUSTOMER = '/customer',

@@ -18,6 +18,7 @@ import { IApiMeta, IApiResponse, ITeam } from '@/interfaces';
 import { deleteTeamMutation } from '@/mutations';
 import { teamService } from '@/services/teamService';
 import { displayDate } from '@/utils/displayDateUtil';
+
 import { CreateAndEditTeamModal } from '../CreateAndEditTeamModal';
 
 type TeamsTableProps = {
@@ -121,9 +122,9 @@ export const TeamsTable: FC<TeamsTableProps> = ({ initalTeamsResponse }) => {
           </Tooltip>
         }
       >
-        <Table
+        <Table<ITeam>
           dataSource={teams}
-          rowKey={(record) => record._id}
+          rowKey={(record) => record.id}
           meta={teamsResponse?.meta as IApiMeta}
           pagination={{
             onChange: handleChangePagination,

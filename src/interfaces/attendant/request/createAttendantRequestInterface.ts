@@ -1,4 +1,4 @@
-import { ICreateAttendantFormInterface } from '../form';
+import { ICreateAttendantForm } from '../form';
 
-export interface ICreateAttendantRequestInterface
-  extends ICreateAttendantFormInterface {}
+export interface ICreateAttendantRequest
+  extends Omit<ICreateAttendantForm, 'team_name'> {}

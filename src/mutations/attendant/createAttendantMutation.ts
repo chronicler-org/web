@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { QueryKeys } from '@/enums';
-import { ICreateAttendantRequestInterface } from '@/interfaces';
+import { ICreateAttendantRequest } from '@/interfaces';
 import { attendantService } from '@/services/attendantService';
 import { mutationError } from '@/utils/mutationErrorUtil';
 
@@ -11,7 +11,7 @@ export const createAttendantMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: ICreateAttendantRequestInterface) =>
+    mutationFn: (data: ICreateAttendantRequest) =>
       attendantService.create(data),
     onError: mutationError,
     onSuccess: () => {

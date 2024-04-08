@@ -119,9 +119,9 @@ export const TagsTable: FC<TagsTableProps> = ({ initalTagsResponse }) => {
           </Tooltip>
         }
       >
-        <Table
+        <Table<ITag>
           dataSource={tags}
-          rowKey={(record) => record._id}
+          rowKey={(record) => record.id}
           meta={tagsResponse?.meta as IApiMeta}
           pagination={{
             onChange: handleChangePagination,

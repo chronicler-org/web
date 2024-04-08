@@ -3,14 +3,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { QueryKeys } from '@/enums/queryKesEnum';
-import { IUpdateAttendantRequestInterface } from '@/interfaces';
+import { IUpdateAttendantRequest } from '@/interfaces';
 import { attendantService } from '@/services/attendantService';
 import { mutationError } from '@/utils/mutationErrorUtil';
 
 export const updateAttendantMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: IUpdateAttendantRequestInterface) =>
+    mutationFn: (data: IUpdateAttendantRequest) =>
       attendantService.update(data),
     onError: mutationError,
     onSuccess: () => {

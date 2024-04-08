@@ -1,4 +1,3 @@
-import { ICreateAttendantFormInterface } from './createAttendantFormInterface';
+import { ICreateAttendantForm } from './createAttendantFormInterface';
 
-export interface IUpdateAttendantFormInterface
-  extends ICreateAttendantFormInterface {}
+export interface IUpdateAttendantFormInterface extends ICreateAttendantForm {}
