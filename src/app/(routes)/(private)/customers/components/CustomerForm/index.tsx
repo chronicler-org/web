@@ -1,6 +1,6 @@
 import Autocomplete from '@/app/components/Autocomplete';
 import classNames from 'classnames';
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction, useRef } from 'react';
 import { ICustomer, ITag } from '@/interfaces';
 import { tags } from '@/mock/tags';
 import SelectedTag from '../SelectedTag';
@@ -16,6 +16,8 @@ const CustomerForm: FC<CustomerFormProps> = ({
   selectedTags,
   setSelectedTags,
 }) => {
+  const formRef = useRef<HTMLFormElement>(null);
+
   const addSelectedTag = (id: string) => {
     const tag = tags.find((tag) => tag.id === id);
     if (tag) {
@@ -31,7 +33,12 @@ const CustomerForm: FC<CustomerFormProps> = ({
 
   return (
     <>
-      <form id='attendant-form' method='post' className='flex flex-col gap-4'>
+      <form
+        ref={formRef}
+        id='attendant-form'
+        method='post'
+        className='flex flex-col gap-4'
+      >
         <label
           htmlFor='name'
           className='form-control gap-2'
@@ -43,7 +50,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='name'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.name}
+              defaultValue={customerElement?.name}
               required
             />
           </div>
@@ -84,7 +91,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='cpf'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.cpf}
+              defaultValue={customerElement?.cpf}
               readOnly={Boolean(customerElement?.cpf)}
               required
             />
@@ -102,7 +109,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='email'
               type='email'
               className='min-w-0 grow'
-              value={customerElement?.email}
+              defaultValue={customerElement?.email}
               required
             />
           </div>
@@ -119,7 +126,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='phone'
               type='tel'
               className='min-w-0 grow'
-              value={customerElement?.phone}
+              defaultValue={customerElement?.phone}
               required
             />
           </div>
@@ -137,7 +144,9 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='brith'
               placeholder='dd/MM/yyyy'
               className='min-w-0 grow'
-              value={customerElement?.birth_date.toISOString().substring(0, 10)}
+              defaultValue={customerElement?.birth_date
+                .toISOString()
+                .substring(0, 10)}
               required
             />
           </div>
@@ -150,7 +159,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='cep'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.address.cep}
+              defaultValue={customerElement?.address.cep}
               required
             />
           </div>
@@ -167,7 +176,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='city'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.address.state}
+              defaultValue={customerElement?.address.state}
               required
             />
           </div>
@@ -184,7 +193,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='city'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.address.city}
+              defaultValue={customerElement?.address.city}
               required
             />
           </div>
@@ -201,7 +210,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='neighborhood'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.address.neighborhood}
+              defaultValue={customerElement?.address.neighborhood}
               required
             />
           </div>
@@ -214,7 +223,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='street'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.address.street_name}
+              defaultValue={customerElement?.address.street_name}
               required
             />
           </div>
@@ -231,7 +240,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='number'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.address.number}
+              defaultValue={customerElement?.address.number}
               required
             />
           </div>
@@ -248,7 +257,7 @@ const CustomerForm: FC<CustomerFormProps> = ({
               id='complement'
               type='text'
               className='min-w-0 grow'
-              value={customerElement?.address.complement}
+              defaultValue={customerElement?.address.complement}
               required
             />
           </div>
@@ -257,11 +266,20 @@ const CustomerForm: FC<CustomerFormProps> = ({
 
       <div className='modal-action'>
         <form method='dialog'>
-          <button type='submit' className='btn btn-ghost'>
+          <button
+            onClick={() => formRef.current?.reset()}
+            type='submit'
+            className='btn btn-ghost'
+          >
             Cancelar
           </button>
         </form>
-        <button type='submit' form='attendant-form' className='btn'>
+        <button
+          onClick={() => formRef.current?.reset()}
+          type='submit'
+          form='attendant-form'
+          className='btn'
+        >
           Salvar
         </button>
       </div>
