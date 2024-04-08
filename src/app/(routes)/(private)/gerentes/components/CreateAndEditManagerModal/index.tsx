@@ -18,18 +18,19 @@ import {
   Input,
 } from '@/app/components/ui/form';
 import {
-  IAttendant,
   ICreateAttendantForm,
-  ICreateAttendantRequest,
+  ICreateManagerForm,
+  ICreateManagerRequest,
+  IManager,
 } from '@/interfaces';
-import { createAttendantMutation, updateAttendantMutation } from '@/mutations';
+import { createManagerMutation, updateManagerMutation } from '@/mutations';
 import { fetchTeamOptions } from '@/utils/fetchTeamOptions';
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull';
 
-type CreateAndEditAttendantModalProps = {
+type CreateAndEditManagerModalProps = {
   onRequestClose: () => void;
   isOpen: boolean;
-  attendant?: IAttendant | null;
+  manager?: IManager | null;
 };
 
 dayjs.extend(weekday);
@@ -37,9 +38,11 @@ dayjs.extend(localeData);
 
 const dateFormat = 'DD/MM/YYYY';
 
-export const CreateAndEditAttendantModal: FC<
-  CreateAndEditAttendantModalProps
-> = ({ onRequestClose, isOpen, attendant }) => {
+export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
+  onRequestClose,
+  isOpen,
+  manager,
+}) => {
   const schema = yup.object().shape({
     cpf: yup
       .string()
@@ -51,7 +54,7 @@ export const CreateAndEditAttendantModal: FC<
       .min(10, 'O campo deve ter pelo menos 10 caracteres')
       .max(50, 'O campo deve ter no máximo 50 caracteres'),
 
-    ...(!attendant && {
+    ...(manager && {
       password: yup
         .string()
         .required('Campo obrigatório')
@@ -77,16 +80,16 @@ export const CreateAndEditAttendantModal: FC<
     setValue,
     formState: { errors },
     reset,
-  } = useForm<ICreateAttendantForm>({
+  } = useForm<ICreateManagerForm>({
     mode: 'onBlur',
     resolver: yupResolver(schema as any),
     defaultValues: {
-      cpf: attendant?.cpf,
-      name: attendant?.name,
-      team_id: attendant?.team?.id,
-      team_name: attendant?.team?.name,
-      birth_date: attendant?.birth_date,
-      email: attendant?.email,
+      cpf: manager?.cpf,
+      name: manager?.name,
+      team_id: manager?.team?.id,
+      team_name: manager?.team?.name,
+      birth_date: manager?.birth_date,
+      email: manager?.email,
     },
   });
 
@@ -104,21 +107,21 @@ export const CreateAndEditAttendantModal: FC<
   };
 
   const {
-    mutateAsync: createAttendantMutateAsync,
-    isPending: isPendingCreateAttendant,
-  } = createAttendantMutation();
+    mutateAsync: createManagerMutateAsync,
+    isPending: isPendingCreateManager,
+  } = createManagerMutation();
   const {
-    mutateAsync: updateAttendantMutateAsync,
-    isPending: isPendingUpdateAttendant,
-  } = updateAttendantMutation();
-  const onSubmit = async (data: ICreateAttendantForm) => {
+    mutateAsync: updateManagerMutateAsync,
+    isPending: isPendingUpdateManager,
+  } = updateManagerMutation();
+  const onSubmit = async (data: ICreateManagerForm) => {
     try {
-      const object = replaceEmptyStringWithNull<ICreateAttendantRequest>(data);
+      const object = replaceEmptyStringWithNull<ICreateManagerRequest>(data);
 
-      if (!attendant) await createAttendantMutateAsync(object);
+      if (!manager) await createManagerMutateAsync(object);
       else {
-        await updateAttendantMutateAsync({
-          id: attendant.id,
+        await updateManagerMutateAsync({
+          id: manager.id,
           ...object,
         });
       }
@@ -130,24 +133,24 @@ export const CreateAndEditAttendantModal: FC<
 
   useEffect(() => {
     reset({
-      cpf: attendant?.cpf,
-      name: attendant?.name,
-      team_id: attendant?.team?.id,
-      team_name: attendant?.team?.name,
-      birth_date: attendant?.birth_date,
-      email: attendant?.email,
+      cpf: manager?.cpf,
+      name: manager?.name,
+      team_id: manager?.team?.id,
+      team_name: manager?.team?.name,
+      birth_date: manager?.birth_date,
+      email: manager?.email,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [attendant]);
+  }, [manager]);
 
   return (
     <Modal
-      title={`${attendant ? 'Editar' : 'Criar'} Atendete`}
+      title={`${manager ? 'Editar' : 'Criar'} Gerente`}
       open={isOpen}
-      confirmLoading={isPendingCreateAttendant || isPendingUpdateAttendant}
+      confirmLoading={isPendingCreateManager || isPendingUpdateManager}
       onCancel={handleCloseModal}
       onOk={handleSubmit(onSubmit)}
-      okText={attendant ? 'Editar' : 'Criar'}
+      okText={manager ? 'Editar' : 'Criar'}
       okButtonProps={{ size: 'large' }}
       cancelButtonProps={{ size: 'large' }}
     >
@@ -249,7 +252,7 @@ export const CreateAndEditAttendantModal: FC<
           />
         </FormItem>
 
-        <RenderIf condition={!attendant}>
+        <RenderIf condition={!manager}>
           <FormItem
             label='Senha'
             name='password'

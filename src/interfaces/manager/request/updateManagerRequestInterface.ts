@@ -1,6 +1,5 @@
 import { IUpdateManagerFormInterface } from '../form';
 
-export interface IUpdateManagerRequestInterface
-  extends IUpdateManagerFormInterface {
+export interface IUpdateManagerRequest extends IUpdateManagerFormInterface {
   id: string;
 }
