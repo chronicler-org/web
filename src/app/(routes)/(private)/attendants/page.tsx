@@ -1,68 +1,29 @@
 'use client';
 
-import { IAttendant } from '@/interfaces';
+import { IAttendant, ITeam } from '@/interfaces';
+import { attendants } from '@/mock/attendants';
 import {
-  CalendarDots,
-  Envelope,
-  IdentificationCard,
   MagnifyingGlass,
   Plus,
   SortAscending,
   SortDescending,
-  User,
 } from '@phosphor-icons/react';
 import { useRef, useState } from 'react';
-
-const now = new Date();
-const createdAt = now;
-const updatedAt = now;
-
-const attendants: Array<IAttendant> = [
-  {
-    id: '1',
-    name: 'Carlos Adriano',
-    email: 'carlosadriano@mail.com',
-    cpf: '11111111111',
-    birthDate: new Date(2002, 3, 2),
-    team: { id: '1', name: 'Loja', createdAt, updatedAt },
-    createdAt,
-    updatedAt,
-  },
-  {
-    id: '2',
-    name: 'João Mota',
-    email: 'joaomota@mail.com',
-    cpf: '11111111111',
-    birthDate: new Date(1997, 4, 9),
-    team: { id: '1', name: 'Loja', createdAt, updatedAt },
-    createdAt,
-    updatedAt,
-  },
-  {
-    id: '3',
-    name: 'Vanessa Souza',
-    email: 'vanessasouza@mail.com',
-    cpf: '11111111111',
-    birthDate: new Date(2001, 11, 20),
-    team: { id: '2', name: 'Virtual', createdAt, updatedAt },
-    createdAt,
-    updatedAt,
-  },
-];
+import AttendantForm from './components/AttendantForm';
 
 const Page = () => {
   const [sortAscending, setSortAscending] = useState<Boolean>(false);
   const [attendantElement, setAttendantElement] = useState<IAttendant>();
-  const modalRef = useRef<HTMLDialogElement>(null);
+  const [selectedTeam, setSelectedTeam] = useState<ITeam>();
 
+  const modalRef = useRef<HTMLDialogElement>(null);
   const handleModal = (e?: IAttendant) => {
     return () => {
       setAttendantElement(e);
+      setSelectedTeam(e ? e.team : undefined);
       modalRef.current?.showModal();
     };
   };
-
-  const onSubmit = () => {};
 
   return (
     <div className='flex flex-1 flex-col gap-2'>
@@ -98,6 +59,7 @@ const Page = () => {
           <Plus />
         </button>
       </div>
+
       <div className='overflow-x-auto'>
         <table className='table'>
           <thead>
@@ -115,7 +77,7 @@ const Page = () => {
               >
                 <td>{e.name}</td>
                 <td>
-                  <div className='badge badge-outline'>{e.team.name}</div>
+                  <div className='badge badge-outline p-4'>{e.team.name}</div>
                 </td>
               </tr>
             ))}
@@ -129,105 +91,11 @@ const Page = () => {
         className='modal modal-bottom sm:modal-middle'
       >
         <div className='modal-box'>
-          <form
-            id='attendant-form'
-            method='post'
-            onSubmit={onSubmit}
-            className='flex flex-col gap-4'
-          >
-            <label
-              htmlFor='name'
-              className='form-control gap-2'
-              aria-label='Nome completo'
-            >
-              <span>Nome completo</span>
-              <div className='input input-bordered flex w-full items-center gap-2'>
-                <User size={20} />
-                <input
-                  id='name'
-                  type='text'
-                  className='min-w-0 grow'
-                  defaultValue={attendantElement?.name}
-                  required
-                />
-              </div>
-            </label>
-            <label
-              htmlFor='cpf'
-              className='form-control gap-2'
-              aria-label='CPF'
-            >
-              <span>CPF</span>
-              <div className='input input-bordered flex w-full items-center gap-2'>
-                <IdentificationCard size={20} />
-                <input
-                  id='cpf'
-                  type='text'
-                  className='min-w-0 grow'
-                  defaultValue={attendantElement?.cpf}
-                  readOnly={Boolean(attendantElement?.cpf)}
-                  required
-                />
-              </div>
-            </label>
-            <label
-              htmlFor='email'
-              className='form-control gap-2'
-              aria-label='E-mail'
-            >
-              <span>E-mail</span>
-              <div className='input input-bordered flex w-full items-center gap-2'>
-                <Envelope size={20} />
-                <input
-                  id='email'
-                  type='email'
-                  className='min-w-0 grow'
-                  defaultValue={attendantElement?.email}
-                  required
-                />
-              </div>
-            </label>
-            <label
-              className='form-control gap-2'
-              htmlFor='brith'
-              aria-label='Data de nascimento'
-            >
-              <span>Data de nascimento</span>
-              <div className='input input-bordered flex w-full items-center gap-2'>
-                <CalendarDots size={20} />
-                <input
-                  type='date'
-                  id='brith'
-                  placeholder='dd/MM/yyyy'
-                  className='min-w-0 grow'
-                  defaultValue={attendantElement?.birthDate
-                    .toISOString()
-                    .substring(0, 10)}
-                  required
-                />
-              </div>
-            </label>
-            <label htmlFor='team' className='form-control gap-2'>
-              <span>Equipe</span>
-              <select id='team' className='select select-bordered w-full'>
-                <option disabled selected>
-                  Equipe
-                </option>
-                <option>Virtual</option>
-                <option>Loja</option>
-              </select>
-            </label>
-          </form>
-          <div className='modal-action'>
-            <form method='dialog'>
-              <button type='submit' className='btn btn-ghost'>
-                Cancelar
-              </button>
-            </form>
-            <button type='submit' form='attendant-form' className='btn'>
-              Salvar
-            </button>
-          </div>
+          <AttendantForm
+            selectedTeam={selectedTeam}
+            attendantElement={attendantElement}
+            setSelectedTeam={setSelectedTeam}
+          />
         </div>
       </dialog>
     </div>
