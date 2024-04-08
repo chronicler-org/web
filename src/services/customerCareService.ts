@@ -13,7 +13,7 @@ const { post, get, delete: destroy, patch } = api;
 
 export const customerCareService = {
   allCustomerCares: async (query?: string) => {
-    const res = await get(`${query || ''}`);
+    const res = await get(`?${query || ''}`);
     return res.data;
   },
   singleCustomerCare: async (id: string) => {

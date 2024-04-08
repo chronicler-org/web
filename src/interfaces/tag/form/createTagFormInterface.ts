@@ -1,4 +1,4 @@
 import { ITag } from '../tagInterface';
 
-export interface ICreateTagFormInterface
+export interface ICreateTagForm
   extends Omit<ITag, 'id' | 'created_at' | 'updated_at'> {}

@@ -18,5 +18,11 @@ export const themeConfig: ThemeConfig = {
     Button: {
       controlHeightLG: 48,
     },
+    Badge: {
+      statusSize: 24,
+    },
+    ColorPicker: {
+      controlHeightLG: 48,
+    },
   },
 };

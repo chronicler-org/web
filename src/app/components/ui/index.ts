@@ -1,3 +1,4 @@
+export * from './Badge';
 export * from './Col';
 export * from './Divider';
 export * from './Row';

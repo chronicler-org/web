@@ -1,3 +1,3 @@
-import { ICreateTagFormInterface } from './createTagFormInterface';
+import { ICreateTagForm } from './createTagFormInterface';
 
-export interface IUpdateTagFormInterface extends ICreateTagFormInterface {}
+export interface IUpdateTagFormInterface extends ICreateTagForm {}

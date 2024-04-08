@@ -4,11 +4,16 @@ import { IApiMeta } from '@/interfaces/general';
 
 type UseTablePaginationProps = {
   meta: IApiMeta;
+  sortByDefault?: string;
 };
 
-export const usePagination = ({ meta }: UseTablePaginationProps) => {
+export const usePagination = ({
+  meta,
+  sortByDefault = 'created_at:DESC',
+}: UseTablePaginationProps) => {
   const [searchParams, setSearchParams] = useState<URLSearchParams>(() => {
     const query = new URLSearchParams();
+    query.set('order', sortByDefault);
     if (meta) {
       if (meta.page) query.set('pagina', meta.page.toString());
       if (meta.limit) query.set('limite', meta.limit.toString());

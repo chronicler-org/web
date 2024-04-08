@@ -99,23 +99,23 @@ export const CreateAndEditProductModal: FC<CreateAndEditProductModalProps> = ({
 
   useEffect(() => {
     reset({
-      fabric: product?.fabric,
-      model: product?.model,
-      size: product?.size,
-      stock: product?.stock,
-      value: product?.value,
+      fabric: product?.fabric || '',
+      model: product?.model || ClothingModel.DRESS,
+      size: product?.size || ProductSize.PP,
+      stock: product?.stock || 0,
+      value: product?.value || 0,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product]);
 
   return (
     <Modal
-      title='Criar Produto'
+      title={`${product ? 'Editar' : 'Criar'} Produto`}
       open={isOpen}
       confirmLoading={isPendingCreateProduct || isPendingUpdateProduct}
       onCancel={handleCloseModal}
       onOk={handleSubmit(onSubmit)}
-      okText={`${product ? 'Editar' : 'Criar'} Produto`}
+      okText={product ? 'Editar' : 'Criar'}
       okButtonProps={{ size: 'large' }}
       cancelButtonProps={{ size: 'large' }}
     >
