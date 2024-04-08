@@ -25,6 +25,10 @@ export const attendantService = {
     patch(`/${id}`, { ...rest }),
   remove: (id: string) => destroy(`/${id}`),
 
+  allEvaluations: async (query?: string) => {
+    const res = await get(`/evaluation?${query || ''}`);
+    return res.data;
+  },
   createEvaluation: (evaluation: ICreateAttendantEvaluationRequest) =>
     post('/evaluation', evaluation),
 };
