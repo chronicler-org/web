@@ -16,3 +16,40 @@ input[type='number'] {
 button {
   box-shadow: none !important;
 }
+
+/* MODAL */
+.ant-modal-wrap.ant-modal-centered {
+  justify-content: center !important;
+  align-items: center !important;
+}
+.ant-modal-header {
+  flex: 1 !important;
+
+  padding: 16px 24px !important;
+}
+
+.ant-modal-header .ant-modal-title {
+  font-weight: 500 !important;
+}
+
+.ant-modal-body {
+  flex: 1 !important;
+  padding: 0 24px 0 24px !important;
+  overflow-y: auto;
+}
+
+.ant-modal-content {
+  max-height: 90vh !important;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  padding: 0 !important;
+}
+
+.ant-modal-footer {
+  flex: 1 !important;
+
+  padding: 1rem 1.6rem !important;
+}

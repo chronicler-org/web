@@ -3,7 +3,7 @@ import { ITeam } from '../team';
 
 export interface ICustomerCare {
   id: string;
-  date: Date;
+  date: string;
   customer: ICustomer;
   Team: ITeam;
   created_at: Date;

@@ -2,27 +2,38 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { BsPlus, BsTrash } from 'react-icons/bs';
+import { v4 as uuidV4 } from 'uuid';
 import * as yup from 'yup';
 
+import { Col, Divider, Row, Typography } from '@/app/components/ui';
+import { Button } from '@/app/components/ui/Button';
 import { Modal } from '@/app/components/ui/Modal';
+import { Space } from '@/app/components/ui/Space';
 import {
-  ColorPicker,
   DebounceSelect,
   DefaultOptionType,
   FormItem,
+  Input,
+  InputNumber,
   Select,
 } from '@/app/components/ui/form';
 import { PaymentMethod } from '@/enums';
 import { ICreateSaleForm, ICreateSaleRequest } from '@/interfaces';
 import { createSaleMutation } from '@/mutations';
-import { fetchCustomerOptions } from '@/utils/fetchTeamOptions';
+import { fetchCustomerCaresOptions } from '@/utils/fetchTeamOptions';
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull';
 
 type CreateAndEditTagModalProps = {
   onRequestClose: () => void;
   isOpen: boolean;
 };
+
+interface ISaleItem {
+  product_id: string;
+  quantity: number;
+}
 
 const schema = yup.object().shape({
   payment_method: yup
@@ -37,7 +48,10 @@ const schema = yup.object().shape({
     .array()
     .of(
       yup.object().shape({
-        product_id: yup.string().required('Campo obrigatório'),
+        product_id: yup
+          .string()
+          .uuid('Campo obrigatório')
+          .required('Campo obrigatório'),
         quantity: yup
           .number()
           .min(1, 'O valor mínimo é de 1')
@@ -48,6 +62,7 @@ const schema = yup.object().shape({
     .min(1, 'Pelo menos um item é necessário'),
 });
 
+const { Title } = Typography;
 export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
   isOpen,
   onRequestClose,
@@ -62,6 +77,10 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
     mode: 'onBlur',
     resolver: yupResolver(schema) as any,
   });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'sales_items',
+  });
 
   const handleCloseModal = () => {
     reset({
@@ -70,6 +89,14 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
       payment_method: PaymentMethod.CASH,
     });
     onRequestClose();
+  };
+
+  const handleAddItem = () => {
+    append({ titulo: '', url: '', id: uuidV4() } as any);
+  };
+
+  const handleRemoveItem = (index: number) => {
+    remove(index);
   };
 
   const { mutateAsync: createSaleMutateAsync, isPending: isPendingCreateSale } =
@@ -98,7 +125,7 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
     >
       <form>
         <FormItem
-          label='Cliente'
+          label='Atendimento de'
           name='customer_name_cpf'
           required
           labelCol={{ span: 24 }}
@@ -122,7 +149,7 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
                 });
               }
             }}
-            fetchOptions={fetchCustomerOptions()}
+            fetchOptions={fetchCustomerCaresOptions()}
             control={control}
             errors={errors}
           />
@@ -147,24 +174,79 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
           />
         </FormItem>
 
-        <FormItem
-          label='Cor'
-          name='color'
-          required
-          labelCol={{ span: 24 }}
-          errors={errors}
-        >
-          <ColorPicker
-            name='color'
+        <Divider />
+
+        <Title level={5}>Items de venda</Title>
+
+        <Space direction='vertical' size='middle'>
+          {fields.map((item, index) => {
+            const itemSale = item as unknown as ISaleItem;
+            return (
+              <Row gutter={[24, 24]} key={itemSale.product_id} align='middle'>
+                <Col span={24} md={16}>
+                  <FormItem
+                    label='Produto'
+                    name={`sales_items.${index}.product_id` as any}
+                    required
+                    labelCol={{ span: 24 }}
+                    errors={errors}
+                  >
+                    <Input
+                      name={`sales_items.${index}.product_id` as any}
+                      size='large'
+                      type='text'
+                      required
+                      control={control}
+                      errors={errors}
+                    />
+                  </FormItem>
+                </Col>
+                <Col span={24} md={6}>
+                  <FormItem
+                    label='Quantidade'
+                    name={`sales_items.${index}.quantity` as any}
+                    required
+                    labelCol={{ span: 24 }}
+                    errors={errors}
+                  >
+                    <InputNumber
+                      name={`sales_items.${index}.quantity` as any}
+                      size='large'
+                      type='text'
+                      min={1}
+                      required
+                      className='!w-full'
+                      control={control}
+                      errors={errors}
+                    />
+                  </FormItem>
+                </Col>
+                <Col span={24} md={2}>
+                  <Button
+                    htmlType='button'
+                    type='primary'
+                    disabled={fields.length === 1}
+                    danger
+                    onClick={() => handleRemoveItem(index)}
+                    data-tooltip-id='tooltip-button'
+                    data-tooltip-content='Excluir vídeo'
+                  >
+                    <BsTrash />
+                  </Button>
+                </Col>
+              </Row>
+            );
+          })}
+          <Button
             size='large'
-            format='hex'
-            defaultFormat='hex'
-            allowClear
-            showText
-            control={control}
-            errors={errors}
-          />
-        </FormItem>
+            onClick={handleAddItem}
+            type='dashed'
+            className='!w-full'
+            icon={<BsPlus />}
+          >
+            Adicionar Produto
+          </Button>
+        </Space>
       </form>
     </Modal>
   );
