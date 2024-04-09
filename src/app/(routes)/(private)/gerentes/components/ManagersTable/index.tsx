@@ -25,7 +25,7 @@ import { Space } from '@/app/components/ui/Space';
 import { Tooltip } from '@/app/components/ui/Tooltip';
 import { QueryKeys } from '@/enums';
 import { usePagination, useQueryFactory } from '@/hooks';
-import { IApiMeta, IApiResponse, IAttendant, IManager } from '@/interfaces';
+import { IApiMeta, IApiResponse, IManager } from '@/interfaces';
 import { deleteManagerMutation } from '@/mutations';
 import { managerService } from '@/services/managerService';
 import { displayDate } from '@/utils/displayDateUtil';
@@ -35,7 +35,7 @@ import { formatCPF } from '@/utils/stringutil';
 import { CreateAndEditManagerModal } from '../CreateAndEditManagerModal';
 
 type ManagersTableProps = {
-  initalManagersResponse: IApiResponse<IAttendant[]>;
+  initalManagersResponse: IApiResponse<IManager[]>;
 };
 
 const { Paragraph, Text } = Typography;
@@ -200,7 +200,7 @@ export const ManagersTable: FC<ManagersTableProps> = ({
                 <Paragraph type='secondary' strong>
                   Data de aniversário:&nbsp;
                   <Text strong>
-                    {displayDate(record.birth_date, {
+                    {displayDate(new Date(record.birth_date), {
                       year: 'numeric',
                       month: '2-digit',
                       day: '2-digit',

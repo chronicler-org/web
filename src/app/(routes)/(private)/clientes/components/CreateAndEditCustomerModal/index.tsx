@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,18 +12,26 @@ import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
+import { TagRender } from '@/app/components/renders';
 import {
+  Col,
   DatePicker,
   DebounceSelect,
   DefaultOptionType,
   FormItem,
   Input,
+  Row,
+  Select,
+  Tag,
 } from '@/app/components/ui';
 import { Modal } from '@/app/components/ui/Modal';
-import { ICustomer } from '@/interfaces';
+import { QueryKeys } from '@/enums';
+import { useQueryFactory } from '@/hooks';
+import { ICustomer, ITag } from '@/interfaces';
 import { ICreateCustomerForm } from '@/interfaces/customer/form';
 import { ICreateCustomerRequest } from '@/interfaces/customer/request';
 import { createCustomerMutation, updateCustomerMutation } from '@/mutations';
+import { tagService } from '@/services/tagService';
 import { fetchCustomerAddressOptions } from '@/utils/fetchTeamOptions';
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull';
 import { BsTelephone } from 'react-icons/bs';
@@ -72,6 +83,13 @@ const schema = yup.object().shape({
 export const CreateAndEditCustomerModal: FC<
   CreateAndEditCustomerModalProps
 > = ({ onRequestClose, isOpen, customer }) => {
+  // RESULTS
+  const { data: tagsResponse, isLoading } = useQueryFactory<ITag[]>({
+    queryKey: [QueryKeys.ATTENDANTS],
+    queryFn: () => tagService.all('limite=1000'),
+  });
+  const tags = tagsResponse?.result || [];
+
   const {
     handleSubmit,
     control,
@@ -94,6 +112,7 @@ export const CreateAndEditCustomerModal: FC<
       ...(customer?.address && {
         address_name: `${customer?.address.street_name}, ${customer?.address.number}, ${customer?.address.city}, ${customer?.address.estate}`,
       }),
+      tag_ids: customer?.tags.map((tag) => tag.id) || [],
     },
   });
 
@@ -149,6 +168,7 @@ export const CreateAndEditCustomerModal: FC<
       ...(customer?.address && {
         address_name: `${customer?.address.street_name}, ${customer?.address.number}, ${customer?.address.city}, ${customer?.address.estate}`,
       }),
+      tag_ids: customer?.tags.map((tag) => tag.id) || [],
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customer]);
@@ -163,6 +183,7 @@ export const CreateAndEditCustomerModal: FC<
       okText={customer ? 'Editar' : 'Criar'}
       okButtonProps={{ size: 'large' }}
       cancelButtonProps={{ size: 'large' }}
+      width={1000}
     >
       <form>
         <FormItem
@@ -208,76 +229,86 @@ export const CreateAndEditCustomerModal: FC<
           />
         </FormItem>
 
-        <FormItem
-          label='CPF'
-          name='cpf'
-          required
-          labelCol={{ span: 24 }}
-          errors={errors}
-        >
-          <Input
-            name='cpf'
-            size='large'
-            type='text'
-            required
-            addonBefore={<IdentificationCard />}
-            control={control}
-            errors={errors}
-          />
-        </FormItem>
+        <Row gutter={[24, 24]}>
+          <Col span={24} md={12}>
+            <FormItem
+              label='CPF'
+              name='cpf'
+              required
+              labelCol={{ span: 24 }}
+              errors={errors}
+            >
+              <Input
+                name='cpf'
+                size='large'
+                type='text'
+                required
+                addonBefore={<IdentificationCard />}
+                control={control}
+                errors={errors}
+              />
+            </FormItem>
+          </Col>
+          <Col span={24} md={12}>
+            <FormItem
+              label='Profissão'
+              name='job'
+              required
+              labelCol={{ span: 24 }}
+              errors={errors}
+            >
+              <Input
+                name='job'
+                size='large'
+                type='text'
+                required
+                control={control}
+                errors={errors}
+              />
+            </FormItem>
+          </Col>
+        </Row>
 
-        <FormItem
-          label='E-mail'
-          name='email'
-          required
-          labelCol={{ span: 24 }}
-          errors={errors}
-        >
-          <Input
-            name='email'
-            size='large'
-            type='text'
-            required
-            addonBefore={<Envelope />}
-            control={control}
-            errors={errors}
-          />
-        </FormItem>
-
-        <FormItem
-          label='Telefone'
-          name='phone'
-          required
-          labelCol={{ span: 24 }}
-          errors={errors}
-        >
-          <Input
-            name='phone'
-            size='large'
-            type='text'
-            required
-            addonBefore={<BsTelephone />}
-            control={control}
-            errors={errors}
-          />
-        </FormItem>
-
-        <FormItem
-          label='Profissão'
-          name='job'
-          required
-          labelCol={{ span: 24 }}
-          errors={errors}
-        >
-          <Input
-            name='job'
-            size='large'
-            type='text'
-            required
-            control={control}
-            errors={errors}
-          />
-        </FormItem>
+        <Row gutter={[24, 24]}>
+          <Col span={24} md={12}>
+            <FormItem
+              label='E-mail'
+              name='email'
+              required
+              labelCol={{ span: 24 }}
+              errors={errors}
+            >
+              <Input
+                name='email'
+                size='large'
+                type='text'
+                required
+                addonBefore={<Envelope />}
+                control={control}
+                errors={errors}
+              />
+            </FormItem>
+          </Col>
+          <Col span={24} md={12}>
+            <FormItem
+              label='Telefone'
+              name='phone'
+              required
+              labelCol={{ span: 24 }}
+              errors={errors}
+            >
+              <Input
+                name='phone'
+                size='large'
+                type='text'
+                required
+                addonBefore={<BsTelephone />}
+                control={control}
+                errors={errors}
+              />
+            </FormItem>
+          </Col>
+        </Row>
 
         <FormItem
           label='Data de nascimento'
@@ -290,8 +321,33 @@ export const CreateAndEditCustomerModal: FC<
             size='large'
             maxDate={dayjs()}
             placeholder={dateFormat}
-            className='!w-full'
             format={dateFormat}
+            control={control}
+            errors={errors}
+          />
+        </FormItem>
+
+        <FormItem
+          label='Tags'
+          name='tag_ids'
+          required
+          labelCol={{ span: 24 }}
+          errors={errors}
+        >
+          <Select
+            name='tag_ids'
+            size='large'
+            mode='multiple'
+            options={tags.map((tag) => ({
+              title: tag.color,
+              value: tag.id,
+              label: tag.name,
+            }))}
+            optionRender={(option, { index }) => (
+              <Tag color={tags[index]?.color}>{option.label}</Tag>
+            )}
+            loading={isLoading}
+            tagRender={TagRender}
             control={control}
             errors={errors}
           />
