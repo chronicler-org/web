@@ -196,6 +196,12 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
                   shouldDirty: true,
                 });
               }
+              if (newValue.label) {
+                setValue('team_name', newValue?.value as string, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
+              }
             }}
             control={control as any}
             errors={errors as any}
