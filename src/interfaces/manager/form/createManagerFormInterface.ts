@@ -8,5 +8,5 @@ export interface ICreateManagerForm
   team_id: string;
   team_name?: string;
   password?: string;
-  birth_date: Date;
+  birth_date: any;
 }

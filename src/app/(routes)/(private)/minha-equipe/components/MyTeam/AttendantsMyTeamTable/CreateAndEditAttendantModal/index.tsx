@@ -18,19 +18,20 @@ import {
   Input,
 } from '@/app/components/ui/form';
 import {
+  IAttendant,
   ICreateAttendantForm,
-  ICreateManagerForm,
-  ICreateManagerRequest,
-  IManager,
+  ICreateAttendantRequest,
+  ITeam,
 } from '@/interfaces';
-import { createManagerMutation, updateManagerMutation } from '@/mutations';
+import { createAttendantMutation, updateAttendantMutation } from '@/mutations';
 import { fetchTeamOptions } from '@/utils/fetchTeamOptions';
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull';
 
-type CreateAndEditManagerModalProps = {
+type CreateAndEditAttendantModalProps = {
   onRequestClose: () => void;
   isOpen: boolean;
-  manager?: IManager | null;
+  attendant?: IAttendant | null;
+  team: ITeam;
 };
 
 dayjs.extend(weekday);
@@ -38,11 +39,9 @@ dayjs.extend(localeData);
 
 const dateFormat = 'YYYY/MM/DD';
 
-export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
-  onRequestClose,
-  isOpen,
-  manager,
-}) => {
+export const CreateAndEditAttendantModal: FC<
+  CreateAndEditAttendantModalProps
+> = ({ onRequestClose, isOpen, attendant, team }) => {
   const schema = yup.object().shape({
     cpf: yup
       .string()
@@ -54,7 +53,7 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
       .min(10, 'O campo deve ter pelo menos 10 caracteres')
       .max(50, 'O campo deve ter no máximo 50 caracteres'),
 
-    ...(!manager && {
+    ...(!attendant && {
       password: yup
         .string()
         .required('Campo obrigatório')
@@ -80,18 +79,18 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
     setValue,
     formState: { errors },
     reset,
-  } = useForm<ICreateManagerForm>({
+  } = useForm<ICreateAttendantForm>({
     mode: 'onBlur',
     resolver: yupResolver(schema) as any,
     defaultValues: {
-      cpf: manager?.cpf,
-      name: manager?.name,
-      team_id: manager?.team?.id,
-      team_name: manager?.team?.name,
-      ...(manager?.birth_date && {
-        birth_date: dayjs(manager?.birth_date, dateFormat),
+      cpf: attendant?.cpf,
+      name: attendant?.name,
+      team_id: attendant?.team?.id || team.id,
+      team_name: attendant?.team?.name || team.name,
+      ...(attendant?.birth_date && {
+        birth_date: dayjs(attendant?.birth_date, dateFormat),
       }),
-      email: manager?.email,
+      email: attendant?.email,
     },
   });
 
@@ -99,8 +98,8 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
     reset({
       cpf: '',
       name: '',
-      team_id: '',
-      team_name: '',
+      team_id: team.id,
+      team_name: team.name,
       password: '',
       birth_date: undefined,
       email: '',
@@ -109,21 +108,21 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
   };
 
   const {
-    mutateAsync: createManagerMutateAsync,
-    isPending: isPendingCreateManager,
-  } = createManagerMutation();
+    mutateAsync: createAttendantMutateAsync,
+    isPending: isPendingCreateAttendant,
+  } = createAttendantMutation();
   const {
-    mutateAsync: updateManagerMutateAsync,
-    isPending: isPendingUpdateManager,
-  } = updateManagerMutation();
-  const onSubmit = async (data: ICreateManagerForm) => {
+    mutateAsync: updateAttendantMutateAsync,
+    isPending: isPendingUpdateAttendant,
+  } = updateAttendantMutation();
+  const onSubmit = async (data: ICreateAttendantForm) => {
     try {
-      const object = replaceEmptyStringWithNull<ICreateManagerRequest>(data);
+      const object = replaceEmptyStringWithNull<ICreateAttendantRequest>(data);
 
-      if (!manager) await createManagerMutateAsync(object);
+      if (!attendant) await createAttendantMutateAsync(object);
       else {
-        await updateManagerMutateAsync({
-          id: manager.id,
+        await updateAttendantMutateAsync({
+          id: attendant.id,
           ...object,
         });
       }
@@ -135,26 +134,26 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
 
   useEffect(() => {
     reset({
-      cpf: manager?.cpf,
-      name: manager?.name,
-      team_id: manager?.team?.id,
-      team_name: manager?.team?.name,
-      ...(manager?.birth_date && {
-        birth_date: dayjs(manager?.birth_date, dateFormat),
+      cpf: attendant?.cpf,
+      name: attendant?.name,
+      team_id: attendant?.team?.id || team.id,
+      team_name: attendant?.team?.name || team.name,
+      ...(attendant?.birth_date && {
+        birth_date: dayjs(attendant?.birth_date, dateFormat),
       }),
-      email: manager?.email,
+      email: attendant?.email,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [manager]);
+  }, [attendant]);
 
   return (
     <Modal
-      title={`${manager ? 'Editar' : 'Criar'} Gerente`}
+      title={`${attendant ? 'Editar' : 'Criar'} Atendente`}
       open={isOpen}
-      confirmLoading={isPendingCreateManager || isPendingUpdateManager}
+      confirmLoading={isPendingCreateAttendant || isPendingUpdateAttendant}
       onCancel={handleCloseModal}
       onOk={handleSubmit(onSubmit)}
-      okText={manager ? 'Editar' : 'Criar'}
+      okText={attendant ? 'Editar' : 'Criar'}
       okButtonProps={{ size: 'large' }}
       cancelButtonProps={{ size: 'large' }}
     >
@@ -197,8 +196,8 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
                 });
               }
             }}
-            control={control as any}
-            errors={errors as any}
+            control={control}
+            errors={errors}
           />
         </FormItem>
 
@@ -256,7 +255,7 @@ export const CreateAndEditManagerModal: FC<CreateAndEditManagerModalProps> = ({
           />
         </FormItem>
 
-        <RenderIf condition={!manager}>
+        <RenderIf condition={!attendant}>
           <FormItem
             label='Senha'
             name='password'

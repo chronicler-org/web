@@ -1,6 +1,10 @@
 import { API_URL } from '@/constants/publicEnv';
 import { EndPoints } from '@/enums/endpointsEnum';
-import { ICreateAttendantRequest, IUpdateAttendantRequest } from '@/interfaces';
+import {
+  ICreateAttendantEvaluationRequest,
+  ICreateAttendantRequest,
+  IUpdateAttendantRequest,
+} from '@/interfaces';
 
 import { setupApiService } from './setupApiService';
 
@@ -16,8 +20,15 @@ export const attendantService = {
     const res = await get(`/${id}`);
     return res.data;
   },
-  create: (manager: ICreateAttendantRequest) => post('', manager),
+  create: (attendant: ICreateAttendantRequest) => post('', attendant),
   update: ({ id, ...rest }: IUpdateAttendantRequest) =>
     patch(`/${id}`, { ...rest }),
   remove: (id: string) => destroy(`/${id}`),
+
+  allEvaluations: async (query?: string) => {
+    const res = await get(`/evaluation?${query || ''}`);
+    return res.data;
+  },
+  createEvaluation: (evaluation: ICreateAttendantEvaluationRequest) =>
+    post('/evaluation', evaluation),
 };
