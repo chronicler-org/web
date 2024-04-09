@@ -1,7 +1,6 @@
-import { ICreateCustomerFormInterface } from '../form';
+import { ICreateCustomerForm } from '../form';
 
-export interface ICreateCustomerRequestInterface
-  extends ICreateCustomerFormInterface {
+export interface ICreateCustomerRequest extends ICreateCustomerForm {
   tag_ids?: string[];
   address_id: string;
 }

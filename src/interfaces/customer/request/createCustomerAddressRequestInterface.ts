@@ -1,4 +1,4 @@
-import { ICreateCustomerAddressFormInterface } from '../form';
+import { ICreateCustomerAddressForm } from '../form';
 
-export interface ICreateCustomerAddressRequestInterface
-  extends ICreateCustomerAddressFormInterface {}
+export interface ICreateCustomerAddressRequest
+  extends ICreateCustomerAddressForm {}

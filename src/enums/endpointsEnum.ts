@@ -12,7 +12,8 @@ export enum EndPoints {
   ATTENDANT = 'attendant',
   ATTENDANT_ME = '/attendant/me',
 
-  CUSTOMER = '/customer',
+  CUSTOMER = 'customer',
+  CUSTOMER_ADDRESS = 'customer/address',
   NEW_CUSTOMER_VARIATION = '/customer/new-variation-percent',
 
   CUSTOMER_CARE = '/customer-care',

@@ -7,7 +7,8 @@ export interface ICustomer {
   name: string;
   email: string;
   phone: string;
-  birth_date: Date;
+  job: string;
+  birth_date: string;
   tags: ITag[];
   address: ICustomerAddress;
   created_at: Date;

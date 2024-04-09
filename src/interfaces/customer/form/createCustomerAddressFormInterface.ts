@@ -1,4 +1,4 @@
 import { ICustomerAddress } from '../customerAddressInterface';
 
-export interface ICreateCustomerAddressFormInterface
+export interface ICreateCustomerAddressForm
   extends Omit<ICustomerAddress, 'id' | 'created_at' | 'updated_at'> {}
