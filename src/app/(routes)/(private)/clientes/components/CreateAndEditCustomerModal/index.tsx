@@ -181,13 +181,13 @@ export const CreateAndEditCustomerModal: FC<
 
         <FormItem
           label='Endereço'
-          name='address_id'
+          name='address_name'
           required
           labelCol={{ span: 24 }}
           errors={errors}
         >
           <DebounceSelect<ICreateCustomerForm, any>
-            name='address_id'
+            name='address_name'
             size='large'
             showSearch
             fetchOptions={fetchCustomerAddressOptions()}
