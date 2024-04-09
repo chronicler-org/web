@@ -193,6 +193,12 @@ export const CreateAndEditAttendantModal: FC<
                   shouldDirty: true,
                 });
               }
+              if (newValue.label) {
+                setValue('team_name', newValue?.value as string, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
+              }
             }}
             control={control}
             errors={errors}

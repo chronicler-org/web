@@ -260,8 +260,8 @@ export const CustomerCaresTable: FC<CustomerCaresTableProps> = ({
           <Column
             title='Profissão'
             key='job'
-            dataIndex='job'
-            render={(job: String) => job}
+            dataIndex='customer'
+            render={(customer: ICustomer) => customer.job}
           />
 
           <Column
