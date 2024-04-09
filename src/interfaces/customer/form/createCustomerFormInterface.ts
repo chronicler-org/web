@@ -8,4 +8,5 @@ export interface ICreateCustomerForm
   birth_date: any;
   address_name: string;
   address_id: string;
+  tag_ids: any;
 }
