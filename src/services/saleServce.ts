@@ -1,13 +1,10 @@
 import { API_URL } from '@/constants/publicEnv';
 import { EndPoints } from '@/enums/endpointsEnum';
-import {
-  ICreateSaleRequestInterface,
-  IUpdateSaleRequestInterface,
-} from '@/interfaces';
+import { ICreateSaleRequest, IUpdateSaleRequestInterface } from '@/interfaces';
 
 import { setupApiService } from './setupApiService';
 
-const api = setupApiService(`${API_URL}${EndPoints.SALE}`);
+const api = setupApiService(`${API_URL}/${EndPoints.SALE}`);
 const { post, get, delete: destroy, patch } = api;
 
 export const saleService = {
@@ -19,7 +16,7 @@ export const saleService = {
     const res = await get(`/${id}`);
     return res.data;
   },
-  createSale: (sale: ICreateSaleRequestInterface) => post('/', sale),
+  createSale: (sale: ICreateSaleRequest) => post('/', sale),
   updateSale: ({ id, ...rest }: IUpdateSaleRequestInterface) =>
     patch(`/${id}`, rest),
   removeSale: (id: string) => destroy(`/${id}`),
