@@ -1,4 +1,9 @@
-import { ICustomer, ICustomerAddress, ITeam } from '@/interfaces';
+import {
+  ICustomer,
+  ICustomerAddress,
+  ICustomerCare,
+  ITeam,
+} from '@/interfaces';
 import { IApiResponse } from '@/interfaces/general';
 import { customerCareService } from '@/services/customerCareService';
 import { customerService } from '@/services/customerService';
@@ -70,10 +75,10 @@ export const fetchCustomerCaresOptions =
     });
     return customerCareService
       .allCustomerCares(newQuery.toString())
-      .then((response: IApiResponse<ICustomer[]>) => {
-        return response.result.map(({ name, cpf }) => ({
-          value: cpf,
-          label: `${name} - ${formatCPF(cpf)}`,
+      .then((response: IApiResponse<ICustomerCare[]>) => {
+        return response.result.map(({ customer, id }) => ({
+          value: id,
+          label: `${customer.name} - ${formatCPF(customer.cpf)}`,
         }));
       });
   };

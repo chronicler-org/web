@@ -16,7 +16,7 @@ import {
 import { PaymentMethod } from '@/enums';
 import { ICreateSaleForm, ICreateSaleRequest } from '@/interfaces';
 import { createSaleMutation } from '@/mutations';
-import { fetchCustomerOptions } from '@/utils/fetchTeamOptions';
+import { fetchCustomerCaresOptions } from '@/utils/fetchTeamOptions';
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull';
 
 type CreateAndEditTagModalProps = {
@@ -122,7 +122,7 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
                 });
               }
             }}
-            fetchOptions={fetchCustomerOptions()}
+            fetchOptions={fetchCustomerCaresOptions()}
             control={control}
             errors={errors}
           />
