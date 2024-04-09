@@ -4,25 +4,27 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FC } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { BsPlus, BsTrash } from 'react-icons/bs';
-import { v4 as uuidV4 } from 'uuid';
 import * as yup from 'yup';
 
 import { Col, Divider, Row, Typography } from '@/app/components/ui';
 import { Button } from '@/app/components/ui/Button';
 import { Modal } from '@/app/components/ui/Modal';
 import { Space } from '@/app/components/ui/Space';
+import { Tooltip } from '@/app/components/ui/Tooltip';
 import {
   DebounceSelect,
   DefaultOptionType,
   FormItem,
-  Input,
   InputNumber,
   Select,
 } from '@/app/components/ui/form';
 import { PaymentMethod } from '@/enums';
 import { ICreateSaleForm, ICreateSaleRequest } from '@/interfaces';
 import { createSaleMutation } from '@/mutations';
-import { fetchCustomerCaresOptions } from '@/utils/fetchTeamOptions';
+import {
+  fetchCustomerCaresOptions,
+  fetchProductsOptions,
+} from '@/utils/fetchTeamOptions';
 import { replaceEmptyStringWithNull } from '@/utils/replaceEmptyStringWithNull';
 
 type CreateAndEditTagModalProps = {
@@ -71,6 +73,7 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors },
     reset,
   } = useForm<ICreateSaleForm>({
@@ -92,7 +95,7 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
   };
 
   const handleAddItem = () => {
-    append({ titulo: '', url: '', id: uuidV4() } as any);
+    append({ quantity: 0, product_id: '', product_name: '' } as any);
   };
 
   const handleRemoveItem = (index: number) => {
@@ -111,6 +114,18 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
     }
   };
 
+  const sales_items = (watch('sales_items') as any[]) || [];
+
+  const total = sales_items.reduce((acc, item) => {
+    const priceMatch = item.product_name.match(/R\$\s+(\d+,\d+)/);
+    if (priceMatch && priceMatch[1]) {
+      const totalPrice =
+        parseFloat(priceMatch[1]) * parseInt(item.quantity, 10);
+      return acc + totalPrice;
+    }
+    return acc;
+  }, 0);
+
   return (
     <Modal
       title='Criar Venda'
@@ -124,6 +139,19 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
       width={900}
     >
       <form>
+        <Space size='middle' align='center' className='justify-end'>
+          <Title level={5} className='!mb-0'>
+            Valor Total
+          </Title>
+
+          <span className='inline-flex rounded-full bg-primary px-3 py-2 font-bold'>
+            {total.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })}
+          </span>
+        </Space>
+
         <FormItem
           label='Atendimento de'
           name='customer_name_cpf'
@@ -149,7 +177,9 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
                 });
               }
             }}
-            fetchOptions={fetchCustomerCaresOptions()}
+            fetchOptions={fetchCustomerCaresOptions(
+              new URLSearchParams('available=true')
+            )}
             control={control}
             errors={errors}
           />
@@ -186,16 +216,38 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
                 <Col span={24} md={16}>
                   <FormItem
                     label='Produto'
-                    name={`sales_items.${index}.product_id` as any}
+                    name={`sales_items.${index}.product_name` as any}
                     required
                     labelCol={{ span: 24 }}
                     errors={errors}
                   >
-                    <Input
-                      name={`sales_items.${index}.product_id` as any}
+                    <DebounceSelect<ICreateSaleForm, any>
+                      name={`sales_items.${index}.product_name` as any}
                       size='large'
-                      type='text'
-                      required
+                      showSearch
+                      onChange={(newValue: DefaultOptionType) => {
+                        if (newValue.value) {
+                          setValue(
+                            `sales_items.${index}.product_id`,
+                            newValue?.value as string,
+                            {
+                              shouldValidate: true,
+                              shouldDirty: true,
+                            }
+                          );
+                        }
+                        if (newValue.label) {
+                          setValue(
+                            `sales_items.${index}.product_name`,
+                            newValue?.label as string,
+                            {
+                              shouldValidate: true,
+                              shouldDirty: true,
+                            }
+                          );
+                        }
+                      }}
+                      fetchOptions={fetchProductsOptions()}
                       control={control}
                       errors={errors}
                     />
@@ -222,17 +274,17 @@ export const CreateSaleModal: FC<CreateAndEditTagModalProps> = ({
                   </FormItem>
                 </Col>
                 <Col span={24} md={2}>
-                  <Button
-                    htmlType='button'
-                    type='primary'
-                    disabled={fields.length === 1}
-                    danger
-                    onClick={() => handleRemoveItem(index)}
-                    data-tooltip-id='tooltip-button'
-                    data-tooltip-content='Excluir vídeo'
-                  >
-                    <BsTrash />
-                  </Button>
+                  <Tooltip title='Excluir Item'>
+                    <Button
+                      htmlType='button'
+                      type='primary'
+                      disabled={fields.length === 1}
+                      danger
+                      onClick={() => handleRemoveItem(index)}
+                    >
+                      <BsTrash />
+                    </Button>
+                  </Tooltip>
                 </Col>
               </Row>
             );

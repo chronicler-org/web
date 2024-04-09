@@ -4,23 +4,35 @@
 
 import { Plus } from '@phosphor-icons/react';
 import { FC, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { BsPencil, BsSearch, BsTrash } from 'react-icons/bs';
+import { BsTrash } from 'react-icons/bs';
 
-import { FilterCollapse } from '@/app/components/FilterCollpase';
-import { Badge, Column, Input, Table, Typography } from '@/app/components/ui';
+import {
+  Col,
+  Column,
+  Row,
+  Select,
+  Table,
+  Typography,
+} from '@/app/components/ui';
 import { Button } from '@/app/components/ui/Button';
 import { Card } from '@/app/components/ui/Card';
 import { Modal } from '@/app/components/ui/Modal';
 import { Space } from '@/app/components/ui/Space';
 import { Tooltip } from '@/app/components/ui/Tooltip';
-import { QueryKeys } from '@/enums';
+import { QueryKeys, SaleTransition } from '@/enums';
 import { usePagination, useQueryFactory } from '@/hooks';
-import { IApiMeta, IApiResponse, ISale, ITag } from '@/interfaces';
-import { deleteTagMutation } from '@/mutations';
+import {
+  IApiMeta,
+  IApiResponse,
+  ICustomerCare,
+  ISale,
+  ITag,
+} from '@/interfaces';
+import { deleteSaleMutation, updateSaleMutation } from '@/mutations';
+import { saleService } from '@/services/saleServce';
 import { displayDate } from '@/utils/displayDateUtil';
 
-import { saleService } from '@/services/saleServce';
+import { formatCPF } from '@/utils/stringutil';
 import { CreateSaleModal } from '../CreateSaleModal';
 
 type SalesTableProps = {
@@ -32,17 +44,9 @@ const { Paragraph, Text } = Typography;
 export const SalesTable: FC<SalesTableProps> = ({ initalSalesResponse }) => {
   const [modal, contextHolder] = Modal.useModal();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<any>({
-    mode: 'onChange',
+  const { searchParams, handleChangePagination } = usePagination({
+    meta: initalSalesResponse?.meta as IApiMeta,
   });
-  const { searchParams, handleChangePagination, handleChangeFilter } =
-    usePagination({
-      meta: initalSalesResponse?.meta as IApiMeta,
-    });
 
   // RESULTS
   const {
@@ -72,18 +76,30 @@ export const SalesTable: FC<SalesTableProps> = ({ initalSalesResponse }) => {
     setCurrentTagUpdate(null);
   };
 
-  const { mutate: deleteTagMutate } = deleteTagMutation();
-  const handleDeleteTag = async (record: ITag) => {
+  const { mutate: deleteSaleMutate } = deleteSaleMutation();
+  const handleDeleteSale = async (record: ISale) => {
     const confirmed = await modal.confirm({
       title: 'Tem certeza?',
       content: (
         <Paragraph strong={false}>
-          Tem certeza que deseja excluir a tag com o nome
-          <Text strong>&nbsp;&quot;{record.name}&quot;</Text>?
+          Tem certeza que deseja excluir a venda de
+          <Text strong>
+            &nbsp;&quot;{record.customer_care.customer.name}&quot;
+          </Text>
+          ?
         </Paragraph>
       ),
     });
-    if (confirmed) deleteTagMutate(record.id);
+    if (confirmed) deleteSaleMutate(record.customer_care.id);
+  };
+
+  const { mutate: updateSaleMutate } = updateSaleMutation();
+
+  const handleUpdateSale = (id: string) => (value: string) => {
+    updateSaleMutate({
+      id,
+      transition: value as any,
+    });
   };
 
   useEffect(() => {
@@ -93,19 +109,6 @@ export const SalesTable: FC<SalesTableProps> = ({ initalSalesResponse }) => {
   }, [searchParams]);
   return (
     <Space direction='vertical' size='middle'>
-      <FilterCollapse
-        onHandleSubmit={handleSubmit(handleChangeFilter)}
-        inputSearch={
-          <Input
-            name='name'
-            placeholder='Buscar pelo nome da tag'
-            size='large'
-            addonBefore={<BsSearch />}
-            control={control}
-            errors={errors}
-          />
-        }
-      />
       <Card
         title='Vendas'
         bordered={false}
@@ -132,17 +135,38 @@ export const SalesTable: FC<SalesTableProps> = ({ initalSalesResponse }) => {
           scroll={{ x: 'max-content' }}
         >
           <Column
-            title='Nome'
-            key='name'
-            dataIndex='name'
-            render={(name: String) => name}
+            title='CPF'
+            key='cpf'
+            dataIndex='customer_care'
+            render={(customer_care: ICustomerCare) =>
+              formatCPF(customer_care.customer.cpf)
+            }
           />
 
           <Column
-            title='Cor'
-            key='color'
-            dataIndex='color'
-            render={(color: String) => <Badge color={color as any} />}
+            title='Status'
+            key='status'
+            dataIndex='status'
+            render={(status: String) => status}
+          />
+
+          <Column
+            title='Forma de Pagamento'
+            key='payment_method'
+            dataIndex='payment_method'
+            render={(payment_method: String) => payment_method}
+          />
+
+          <Column
+            title='Valor Total'
+            key='total_value'
+            dataIndex='total_value'
+            render={(total_value: number) =>
+              total_value.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              })
+            }
           />
 
           <Column
@@ -154,30 +178,38 @@ export const SalesTable: FC<SalesTableProps> = ({ initalSalesResponse }) => {
           <Column
             title='Ações'
             key='acoes'
-            render={(_: any, record: ITag) => (
-              <Space size='small'>
-                <Tooltip title='Editar Tag'>
-                  <Button
-                    type='primary'
-                    htmlType='button'
-                    size='middle'
-                    onClick={handleOpenCreateAndEditTagModal(record)}
-                  >
-                    <BsPencil />
-                  </Button>
-                </Tooltip>
-                <Tooltip title='Excluir Tag'>
-                  <Button
-                    type='primary'
-                    danger
-                    htmlType='button'
-                    size='middle'
-                    onClick={() => handleDeleteTag(record)}
-                  >
-                    <BsTrash />
-                  </Button>
-                </Tooltip>
-              </Space>
+            render={(_: any, record: ISale) => (
+              <Row gutter={[8, 8]}>
+                <Col span={24} md={22}>
+                  <Tooltip title='Atualizar Status'>
+                    <Select
+                      name='transition'
+                      size='middle'
+                      className='!w-full'
+                      onChange={handleUpdateSale(record.customer_care.id)}
+                      options={Object.entries(SaleTransition).map(
+                        ([, label]) => ({
+                          label,
+                          value: label,
+                        })
+                      )}
+                    />
+                  </Tooltip>
+                </Col>
+                <Col span={24} md={2}>
+                  <Tooltip title='Excluir Venda'>
+                    <Button
+                      type='primary'
+                      danger
+                      htmlType='button'
+                      size='middle'
+                      onClick={() => handleDeleteSale(record)}
+                    >
+                      <BsTrash />
+                    </Button>
+                  </Tooltip>
+                </Col>
+              </Row>
             )}
           />
         </Table>
