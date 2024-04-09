@@ -91,7 +91,9 @@ export const CreateAndEditCustomerModal: FC<
       phone: customer?.phone,
       job: customer?.job,
       address_id: customer?.address.id,
-      address_name: `${customer?.address.street_name}, ${customer?.address.number}, ${customer?.address.city}, ${customer?.address.estate}`,
+      ...(customer?.address && {
+        address_name: `${customer?.address.street_name}, ${customer?.address.number}, ${customer?.address.city}, ${customer?.address.estate}`,
+      }),
     },
   });
 
@@ -144,7 +146,9 @@ export const CreateAndEditCustomerModal: FC<
       job: customer?.job,
       phone: customer?.phone,
       address_id: customer?.address.id,
-      address_name: `${customer?.address.street_name}, ${customer?.address.number}, ${customer?.address.city}, ${customer?.address.estate}`,
+      ...(customer?.address && {
+        address_name: `${customer?.address.street_name}, ${customer?.address.number}, ${customer?.address.city}, ${customer?.address.estate}`,
+      }),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customer]);
