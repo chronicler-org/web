@@ -1,5 +1,6 @@
 import { ICustomer, ICustomerAddress, ITeam } from '@/interfaces';
 import { IApiResponse } from '@/interfaces/general';
+import { customerCareService } from '@/services/customerCareService';
 import { customerService } from '@/services/customerService';
 import { teamService } from '@/services/teamService';
 import { formatCPF } from './stringutil';
@@ -44,13 +45,31 @@ export const fetchCustomerAddressOptions =
 export const fetchCustomerOptions =
   (query?: URLSearchParams) => (name: string) => {
     const newQuery = new URLSearchParams(query?.toString() || '');
-    newQuery.set('name', name);
+    newQuery.set('CustomerCPF', name);
     newQuery.forEach((value, key) => {
       if (!value || value === 'undefined' || value === 'none')
         newQuery.delete(key);
     });
     return customerService
       .allCustomers(newQuery.toString())
+      .then((response: IApiResponse<ICustomer[]>) => {
+        return response.result.map(({ name, cpf }) => ({
+          value: cpf,
+          label: `${name} - ${formatCPF(cpf)}`,
+        }));
+      });
+  };
+
+export const fetchCustomerCaresOptions =
+  (query?: URLSearchParams) => (name: string) => {
+    const newQuery = new URLSearchParams(query?.toString() || '');
+    newQuery.set('customer_cpf', name);
+    newQuery.forEach((value, key) => {
+      if (!value || value === 'undefined' || value === 'none')
+        newQuery.delete(key);
+    });
+    return customerCareService
+      .allCustomerCares(newQuery.toString())
       .then((response: IApiResponse<ICustomer[]>) => {
         return response.result.map(({ name, cpf }) => ({
           value: cpf,

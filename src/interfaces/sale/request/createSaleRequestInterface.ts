@@ -1,6 +1,6 @@
-import { ICreateSaleFormInterface } from '../form';
+import { ICreateSaleForm } from '../form';
 import { ISaleItem } from '../saleItemInterface';
 
-export interface ICreateSaleRequestInterface extends ICreateSaleFormInterface {
+export interface ICreateSaleRequest extends ICreateSaleForm {
   sales_items: Pick<ISaleItem, 'product' | 'quantity'>[];
 }
