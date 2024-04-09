@@ -15,7 +15,7 @@ const Page = async () => {
   const currentYear = currentDate.getFullYear();
 
   const [customersResponse, newCustomersVariationResponse] = await Promise.all([
-    getStaticData<ICustomer[]>(`${EndPoints.CUSTOMER}`, {
+    getStaticData<ICustomer[]>(`/${EndPoints.CUSTOMER}`, {
       search: `created_month=${currentMonth}&created_year=${currentYear}&order=created_at:DESC&limit=6`,
       authToken: session.authToken,
       cache: 'no-cache',

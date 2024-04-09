@@ -1,7 +1,9 @@
+import { BrazilianStates } from '@/enums';
+
 export interface ICustomerAddress {
   id: string;
   cep: string;
-  state: string;
+  estate: BrazilianStates;
   city: string;
   neighborhood: string;
   street_name: string;
