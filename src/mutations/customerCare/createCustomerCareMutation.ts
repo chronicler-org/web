@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { QueryKeys } from '@/enums';
-import { ICreateCustomerCareRequestInterface } from '@/interfaces';
+import { ICreateCustomerCareRequest } from '@/interfaces';
 import { customerCareService } from '@/services/customerCareService';
 import { mutationError } from '@/utils/mutationErrorUtil';
 
@@ -11,7 +11,7 @@ export const createCustomerCareMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: ICreateCustomerCareRequestInterface) =>
+    mutationFn: (data: ICreateCustomerCareRequest) =>
       customerCareService.createCustomerCare(data),
     onError: mutationError,
     onSuccess: () => {

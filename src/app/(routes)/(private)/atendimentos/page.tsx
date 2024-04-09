@@ -1,115 +1,31 @@
-'use client';
+import { Metadata } from 'next';
+import { Session, getServerSession } from 'next-auth';
 
-import { ICustomer, ICustomerCare, ITeam } from '@/interfaces';
-import {
-  MagnifyingGlass,
-  Plus,
-  SortAscending,
-  SortDescending,
-} from '@phosphor-icons/react';
-import { useRef, useState } from 'react';
-import { customerCares } from '@/mock/customerCares';
-import CustomerCareForm from './components/CustomerCareForm';
+import { EndPoints } from '@/enums/endpointsEnum';
+import { IApiResponse, ICustomerCare } from '@/interfaces';
+import { getStaticData } from '@/utils/getStaticDataUtil';
+import { nextAuthOptions } from '@/utils/nextAuthOptionsUtil';
 
-const Page = () => {
-  const [sortAscending, setSortAscending] = useState<Boolean>(false);
-  const [customerCareElement, setCustomerCareElement] =
-    useState<ICustomerCare>();
-  const [selectedTeam, setSelectedTeam] = useState<ITeam>();
-  const [selectedCustomer, setSelectedCustomer] = useState<ICustomer>();
+import { CustomerCaresTable } from './components/CustomerCaresTable';
 
-  const modalRef = useRef<HTMLDialogElement>(null);
-  const handleModal = (e?: ICustomerCare) => {
-    return () => {
-      setCustomerCareElement(e);
-      modalRef.current?.showModal();
-    };
-  };
+export const metadata: Metadata = {
+  title: 'Atendimentos - Chronicler',
+};
+
+const Page = async () => {
+  const session = (await getServerSession(nextAuthOptions)) as Session;
+
+  const initalCustomersResponse = (await getStaticData<ICustomerCare[]>(
+    `/${EndPoints.CUSTOMER_CARE}`,
+    {
+      search: 'limite=10&pagina=1&order=created_at:DESC',
+      cache: 'no-store',
+      authToken: session.authToken,
+    }
+  )) as IApiResponse<ICustomerCare[]>;
 
   return (
-    <div className='flex flex-1 flex-col gap-2'>
-      <div className='flex gap-2'>
-        <label
-          aria-label='Buscar atendimento'
-          htmlFor='search'
-          className='input input-bordered flex min-w-0 grow items-center gap-2'
-        >
-          <MagnifyingGlass />
-          <input
-            id='search'
-            name='search'
-            type='text'
-            className='min-w-0 grow'
-            placeholder='Buscar atendimento (Cliente ou Time)'
-          />
-        </label>
-        <button
-          aria-label='Ordenar por'
-          type='button'
-          className='btn btn-square btn-outline text-xl'
-          onClick={() => setSortAscending(!sortAscending)}
-        >
-          {sortAscending ? <SortAscending /> : <SortDescending />}
-        </button>
-        <button
-          aria-label='Cadastrar novo atendimento'
-          type='button'
-          className='btn btn-square btn-outline text-xl'
-          onClick={handleModal()}
-        >
-          <Plus />
-        </button>
-      </div>
-
-      <div className='overflow-x-auto'>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Equipe</th>
-              <th>Data</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(sortAscending ? customerCares.toReversed() : customerCares).map(
-              (e) => (
-                <tr
-                  key={e.id}
-                  onClick={handleModal(e)}
-                  className='hover cursor-pointer'
-                >
-                  <td>{e.customer.name}</td>
-                  <td>{e.Team.name}</td>
-                  <td>
-                    {e.date.toLocaleDateString('pt-BR', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })}
-                  </td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      <dialog
-        ref={modalRef}
-        id='attendant-modal'
-        className='modal modal-bottom sm:modal-middle'
-      >
-        <div className='modal-box'>
-          <CustomerCareForm
-            selectedTeam={selectedTeam}
-            setSelectedTeam={setSelectedTeam}
-            selectedCustomer={selectedCustomer}
-            setSelectedCustomer={setSelectedCustomer}
-            customerCareElement={customerCareElement}
-          />
-        </div>
-      </dialog>
-    </div>
+    <CustomerCaresTable initalCustomerCaresResponse={initalCustomersResponse} />
   );
 };
 

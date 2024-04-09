@@ -1,4 +1,3 @@
-import { ICreateCustomerCareFormInterface } from '../form';
+import { ICreateCustomerCareForm } from '../form';
 
-export interface ICreateCustomerCareRequestInterface
-  extends ICreateCustomerCareFormInterface {}
+export interface ICreateCustomerCareRequest extends ICreateCustomerCareForm {}

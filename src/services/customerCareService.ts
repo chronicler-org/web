@@ -2,13 +2,13 @@ import { API_URL } from '@/constants/publicEnv';
 import { EndPoints } from '@/enums/endpointsEnum';
 import {
   ICreateCustomerCareEvaluationRequestInterface,
-  ICreateCustomerCareRequestInterface,
+  ICreateCustomerCareRequest,
   IUpdateCustomerCareEvaluationRequestInterface,
 } from '@/interfaces';
 
 import { setupApiService } from './setupApiService';
 
-const api = setupApiService(`${API_URL}${EndPoints.CUSTOMER_CARE}`);
+const api = setupApiService(`${API_URL}/${EndPoints.CUSTOMER_CARE}`);
 const { post, get, delete: destroy, patch } = api;
 
 export const customerCareService = {
@@ -20,7 +20,7 @@ export const customerCareService = {
     const res = await get(`/${id}`);
     return res.data;
   },
-  createCustomerCare: (customerCare: ICreateCustomerCareRequestInterface) =>
+  createCustomerCare: (customerCare: ICreateCustomerCareRequest) =>
     post('', customerCare),
   removeCustomerCare: (id: string) => destroy(`/${id}`),
 
