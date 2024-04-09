@@ -3,7 +3,7 @@ import { EndPoints } from '@/enums/endpointsEnum';
 
 import {
   ICreateCustomerAddressRequest,
-  ICreateCustomerRequestInterface,
+  ICreateCustomerRequest,
   IUpdateCustomerAddressRequestInterface,
   IUpdateCustomerRequestInterface,
 } from '@/interfaces/customer/request';
@@ -22,10 +22,9 @@ export const customerService = {
     const res = await get(`/${id}`);
     return res.data;
   },
-  createCustomer: (customer: ICreateCustomerRequestInterface) =>
-    post('', customer),
-  updateCustomer: ({ id, ...rest }: IUpdateCustomerRequestInterface) =>
-    patch(`/${id}`, rest),
+  createCustomer: (customer: ICreateCustomerRequest) => post('', customer),
+  updateCustomer: ({ cpf, ...rest }: IUpdateCustomerRequestInterface) =>
+    patch(`/${cpf}`, rest),
   removeCustomer: (id: string) => destroy(`/${id}`),
 
   allCustomersAddresses: async (query?: string) => {

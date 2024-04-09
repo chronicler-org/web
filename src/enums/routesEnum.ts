@@ -2,6 +2,7 @@ export enum Routes {
   ACCOUNT = 'dashboard',
 
   CUSTOMERS = 'clientes',
+  CUSTOMER_ADDRESS = 'enderecos',
 
   PRODUCTS = 'produtos',
 

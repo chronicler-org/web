@@ -1,4 +1,4 @@
-import { ICreateCustomerFormInterface } from './createCustomerFormInterface';
+import { ICreateCustomerForm } from './createCustomerFormInterface';
 
 export interface IUpdateCustomerFormInterface
-  extends Omit<ICreateCustomerFormInterface, 'cpf'> {}
+  extends Omit<ICreateCustomerForm, 'cpf'> {}

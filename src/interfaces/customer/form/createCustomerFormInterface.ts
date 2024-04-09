@@ -1,7 +1,11 @@
 import { ICustomer } from '../customerInterface';
 
-export interface ICreateCustomerFormInterface
+export interface ICreateCustomerForm
   extends Omit<
     ICustomer,
-    'id' | 'created_at' | 'updated_at' | 'address' | 'tags'
-  > {}
+    'id' | 'created_at' | 'updated_at' | 'address' | 'tags' | 'birth_date'
+  > {
+  birth_date: any;
+  address_name: string;
+  address_id: string;
+}
