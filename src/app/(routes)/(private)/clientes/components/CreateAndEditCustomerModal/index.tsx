@@ -223,6 +223,12 @@ export const CreateAndEditCustomerModal: FC<
                   shouldDirty: true,
                 });
               }
+              if (newValue.label) {
+                setValue('address_name', newValue?.value as string, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
+              }
             }}
             control={control}
             errors={errors}
